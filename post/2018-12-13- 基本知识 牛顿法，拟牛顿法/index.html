@@ -1,22 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://lushunn.github.io</id>
-    <title>Gridea</title>
-    <updated>2019-09-24T07:22:52.423Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://lushunn.github.io"/>
-    <link rel="self" href="https://lushunn.github.io/atom.xml"/>
-    <subtitle>凡有所相，皆为虚妄</subtitle>
-    <logo>https://lushunn.github.io/images/avatar.png</logo>
-    <icon>https://lushunn.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, Gridea</rights>
-    <entry>
-        <title type="html"><![CDATA[牛顿法和拟牛顿法]]></title>
-        <id>https://lushunn.github.io/post/2018-12-13- 基本知识 牛顿法，拟牛顿法</id>
-        <link href="https://lushunn.github.io/post/2018-12-13- 基本知识 牛顿法，拟牛顿法">
-        </link>
-        <updated>2018-12-13T06:10:03.000Z</updated>
-        <content type="html"><![CDATA[<p>PS：由于调库太多，有时会忘记底层的算法如何实现，即使看paper知道算法是如何运算，也无法熟练的代码落地，所以，温习一下一些机器学习的基本名词解释和具体优化算法。</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>牛顿法和拟牛顿法 | Gridea</title>
+<meta name="description" content="凡有所相，皆为虚妄">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1569309769658">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://lushunn.github.io">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1569309769658" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      凡有所相，皆为虚妄
+    </div>
+    <div class="site-footer">
+      Github <a href="https://github.com/lushunn" target="_blank">lushun</a> | <a class="rss" href="https://lushunn.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">牛顿法和拟牛顿法</h2>
+            <div class="post-date">2018-12-13</div>
+            
+            <div class="post-content">
+              <p>PS：由于调库太多，有时会忘记底层的算法如何实现，即使看paper知道算法是如何运算，也无法熟练的代码落地，所以，温习一下一些机器学习的基本名词解释和具体优化算法。</p>
 <p>牛顿法和拟牛顿法也是求解无约束最优化问题的常用方法，有着迭代速度快的优点，由于每一步都要求解目标函数的海赛矩阵的逆矩阵，计算较为复杂，拟牛顿法通过近似的正定矩阵去代替计算较为复杂的海赛矩阵的逆矩阵，简化了计算复杂度</p>
 <h1 id="牛顿法">牛顿法</h1>
 <p>无约束最优化问题:<br>
@@ -137,6 +223,75 @@
 则两者的线性组合<br>
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>G</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>α</mi><msup><mi>G</mi><mrow><mi>D</mi><mi>F</mi><mi>P</mi></mrow></msup><mo>+</mo><mrow><mo fence="true">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo fence="true">)</mo></mrow><msup><mi>G</mi><mrow><mi>B</mi><mi>F</mi><mi>G</mi><mi>S</mi></mrow></msup></mrow><annotation encoding="application/x-tex">G_{k+1}=\alpha G^{DFP}+\left(1-\alpha\right) G^{BFGS}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.924661em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span><span class="mord mathdefault mtight">G</span><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span></span></span></span></span></span></span></span></span></span></span></span><br>
 也满足拟牛顿条件，而且是正定的。其中，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mo>≤</mo><mi>α</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq \alpha \leq 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>。该类算法称为Broyden类算法。</p>
-]]></content>
-    </entry>
-</feed>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://lushunn.github.io/tag/ThpwYZhks" class="tag">
+                    旧blog转移
+                  </a>
+                
+              </div>
+            
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '3a52f974af9281a9e5db',
+        clientSecret: 'a277c665ff999c49c800699f4e0782e75f646fad',
+        repo: 'lushunn.github.io',
+        owner: 'lushunn',
+        admin: ['lushunn'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
