@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title> C++ wk1学习笔记 面向对象程序设计 | hi~</title>
+<meta name="description" content="凡有所相，皆为虚妄">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1570624568468">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://lushunn.github.io">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1570624568468" class="site-logo">
+        <h1 class="site-title">hi~</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      凡有所相，皆为虚妄
+    </div>
+    <div class="site-footer">
+      Github <a href="https://github.com/lushunn" target="_blank">lushun</a> | <a class="rss" href="https://lushunn.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title"> C++ wk1学习笔记 面向对象程序设计</h2>
+            <div class="post-date">2019-10-09</div>
+            
+            <div class="post-content">
+              <h1 id="c-wk1学习笔记-面向对象程序设计">C++ wk1学习笔记 面向对象程序设计</h1>
+<p>参考资料</p>
+<p><a href="https://www.coursera.org/learn/cpp-chengxu-sheji/home/welcome">C++程序设计 北京大学郭炜</a></p>
+<p><a href="https://blog.csdn.net/tianxiaolu1175/article/details/46889523">(https://blog.csdn.net/tianxiaolu1175/article/details/46889523)</a></p>
+<h2 id="1引用">1.引用</h2>
+<h3 id="引用的概念">引用的概念</h3>
+<p>引用（reference）： 引用只是别名，不是实体类型（也就是说c++编译器不为引用单独分配内存空间），对一个对象的引用，就是直接对这个对象的操作。</p>
+<p>下面的写法定义了一个引用，并将其初始化为引用某个变量。</p>
+<blockquote>
+<p>类型名  &amp; 引用名=某变量名；</p>
+</blockquote>
+<pre><code class="language-C++">
+int n = 4；  
+int &amp; r = n; //r引用了n,r的类型是 int &amp;
+
+</code></pre>
+<p>示例1:</p>
+<pre><code class="language-C++">int n = 4;
+int &amp; r = n;
+r = 4;
+cout &lt;&lt; r; //输出 4
+cout &lt;&lt; n; //输出 4    
+n = 5;
+cout &lt;&lt; r; //输出 5
+</code></pre>
+<p>三个特性：</p>
+<p>1.定义引用时一定要将其初始化成引用某个变量。</p>
+<p>2.初始化后，它就一直在引用该变量，不会再引用其他别的变量了。</p>
+<p>3.引用只能引用变量，不能引用常量和表达式。</p>
+<p>示例2：</p>
+<pre><code class="language-C++">double a=4;b=5
+double &amp; r1=a;//引用必须初始化,不可以更改其指向的目标
+double &amp; r2=r1;//r2也引用a
+r2 = 10;
+cout&lt;&lt;a&lt;&lt;endl;// &gt;&gt;10
+r1 = b;//这里只是把b的值赋给r1也就是a,
+//而并不是使引用的目标由对a的引用到对b的引用 
+cout&lt;&lt;a&lt;&lt;endl;//&gt;&gt;5
+</code></pre>
+<h3 id="引用的具体使用场景">引用的具体使用场景</h3>
+<ol>
+<li>引用型参数</li>
+</ol>
+<p>使用引用型参数有两个好处：（1）因为函数形参和实参是同一个对象，也就不存在对象复制，避免了对象的开销。（2）可以在修改形参的同时对实参的修改。当然了，为了避免函数对原来实参的意外修改我们可以 用const 对引用加以修饰 也就是传常引用。传常引用有两个优势（1）因为不存在拷贝构造所以，可以提高c++程序的执行效率（2）避免对象切割问题。</p>
+<ol start="2">
+<li>引用型返回值</li>
+</ol>
+<p>从函数中返回引用，一定要保证在函数返回以后，被引用的目标一直有效，也就是不能返回函数体内的局部对象的引用，大家都知道， 局部对象离开作用域就会被析构掉，所以不能返回对函数体内的局部对象的引用。</p>
+<p>示例3：</p>
+<pre><code class="language-C++">void swap(int &amp;a, int &amp;b)
+{
+
+    int tmp;
+    tmp=a;a=b;b=tmp;
+}
+int n1,n2;
+swap(n1,n2);//交换a,b的值
+
+</code></pre>
+<p>示例4：</p>
+<pre><code class="language-C++">int n=4;
+int &amp;SetValue() {return n;}
+int main()
+{
+    SetValue()=40;
+    count&lt;&lt;n;//print 40
+    return 0;
+}
+
+</code></pre>
+<h3 id="常引用">常引用</h3>
+<p>定义引用时，前面加const关键字，即为“常引用”</p>
+<pre><code class="language-C++">int n;
+const int  &amp; r=n;
+</code></pre>
+<p>r的类型是 const int&amp;；</p>
+<p>特性：不能通过常引用去修改其引用的内容</p>
+<p>示例5：</p>
+<pre><code class="language-C++">int n =100;
+
+const int &amp; r=n;
+r=200;//编译时出错
+n=300;//ok
+
+</code></pre>
+<p>cont T &amp; 和 T &amp;是不同的类型。</p>
+<p>T &amp;类型的引用或T类型的变量可以用来初始化 const T &amp;类型的引用。</p>
+<p>const T类型的常变量和const T &amp;类型的引用则不能用来初始化T &amp;类型的引用，除非进行强制类型转换。</p>
+<h4 id="const关键字的用法">const关键字的用法</h4>
+<ol>
+<li>定义常量</li>
+</ol>
+<pre><code class="language-C++">    const int MAX_LEN=23;
+</code></pre>
+<ol start="2">
+<li>定义常量指针</li>
+</ol>
+<p>不可以通过常量指针修改其指向的内容</p>
+<pre><code class="language-C++">int n,m;
+const int *p=&amp;n;
+*p=5;//编译时出错
+n=4;//ok
+p=&amp;m; //ok,指针方向可以变化
+</code></pre>
+<p>不能把常量指针赋值给非常量指针，反之可行</p>
+<pre><code class="language-C++">const int *p1;int *p2;
+p1=p2; //ok
+p2=p1;//编译时出错
+p2=(int *) p1; //强制类型转换后ok
+</code></pre>
+<p>函数参数为常量指针时，可避免函数内部不小心改变参数指针所指地方的内容。</p>
+<ol start="3">
+<li>不能通过常引用修改其引用的变量</li>
+</ol>
+<h2 id="2-动态内存分配">2. 动态内存分配</h2>
+<p>分配变量：</p>
+<pre><code class="language-C++">    P= new T;
+</code></pre>
+<p>T是任意类型名，P是类型为T *的指针。<br>
+动态分配出一片大小为sizeof(T)字节的内存空间，并且将该内存空间的起始地址赋值给P。比如</p>
+<pre><code class="language-C++">int* pn;
+pn= new int;
+* pn= 5;
+</code></pre>
+<p>分配数组：</p>
+<pre><code class="language-C++">   P = new T[N];
+</code></pre>
+<p>T :任意类型名</p>
+<p>P :类型为T *的指针</p>
+<p>N :要分配的数组元素的个数，可以是整型表达式</p>
+<p>动态分配出一片大小为sizeof(T)字节的内存空间，并且将该内存空间的起始地址赋值给P。<br>
+动态分配数组示例：</p>
+<pre><code class="language-c++">int* pn;
+inti= 5;
+pn= new int[i* 20];
+
+</code></pre>
+<p>用“new”动态分配的内存空间，一定要用“delete”运算符进行释放</p>
+<pre><code class="language-c++">delete 指针；//该指针必须指向new出来的空间
+</code></pre>
+<h2 id="3-内联函数-函数重载-函数缺省参数">3. 内联函数 函数重载 函数缺省参数</h2>
+<h3 id="内联函数">内联函数</h3>
+<p>函数调用是有时间开销的。如果函数本身只有几条语句，执行非常快，而且函数被反复执行很多次，相比之下调用函数所产生的这个开销就会显得比较大。</p>
+<p>为了减少函数调用的开销，引入了内联函数机制。编译器处理对内联函数的调用语句时，是将整个函数的代码插入到调用语句处，而不会产生调用函数的语句。</p>
+<pre><code class="language-c++">inline intMax(inta,intb)
+{
+if( a &gt; b) return a;
+return b;
+}
+</code></pre>
+<h3 id="函数重载">函数重载</h3>
+<p>一个或多个函数，名字相同，然而参数个数或参数类型不相同，这叫做函数的重载</p>
+<ul>
+<li>以下三个函数是重载关系：</li>
+</ul>
+<pre><code class="language-c++">intMax(double f1,double f2) { }
+
+intMax(intn1,int n2) { }
+
+intMax(intn1,int n2,int n3) { }
+</code></pre>
+<ul>
+<li>函数重载使得函数命名变得简单。</li>
+<li>编译器根据调用语句的中的实参的个数和类型判断应该调用哪个函数。</li>
+</ul>
+<h3 id="缺省函数">缺省函数</h3>
+<p>C++中，定义函数的时候可以让最右边的连续若干个参数有缺省值，那么调用函数的时候，若相应位置不写参数，参数就是缺省值。</p>
+<pre><code class="language-c++">void func( intx1, intx2 = 2, intx3= 3) { }
+func(10 ) ; //等效于func(10,2,3)
+func(10,8) ; //等效于func(10,8,3)
+</code></pre>
+<h2 id="4类">4.类</h2>
+<pre><code class="language-c++">class CRectangle {
+    public:
+    int w, h;
+    void Init( int w_, int h_ ) {
+        w = w_; h = h_;
+    }
+    int Area() {
+        return w * h;
+    }
+    int Perimeter() {
+        return 2 * ( w + h );
+    }
+}; //必须有分号
+int main() {
+    int w, h;
+    CRectangle r; //r是一个对象
+    cin &gt;&gt; w &gt;&gt; h;
+    r.Init(w, h);
+    cout &lt;&lt; r.Area() &lt;&lt; endl &lt;&lt; r. Perimeter();
+    return 0;   
+}
+
+</code></pre>
+<p>类定义的变量-&gt;类的实例-&gt;“对象”</p>
+<h3 id="对象的内存分配">对象的内存分配</h3>
+<p>对象的内存空间</p>
+<p>•对象的大小 = 所有成员变量的大小之和</p>
+<p>•E.g. CRectangle类的对象, sizeof(CRectangle) = 8</p>
+<p>每个对象各有自己的存储空间</p>
+<p>•一个对象的某个成员变量被改变, 不会影响到其他的对象</p>
+<h3 id="访问类的成员变量和成员函数">访问类的成员变量和成员函数</h3>
+<p>用法1: 对象名.成员名</p>
+<pre><code class="language-c++">    CRectangle r1, r2;
+    r1.w = 5;
+    r2.Init(3,4);
+</code></pre>
+<p>用法2: 指针-&gt;成员名</p>
+<pre><code class="language-c++">CRectangle r1, r2;
+CRectangle * p1 = &amp; r1;
+CRectangle * p2 = &amp; r2;
+p1-&gt;w = 5;
+p2-&gt;Init(3,4); //Init作用在p2指向的对象上
+</code></pre>
+<p>用法3: 引用名.成员名</p>
+<pre><code class="language-c++">CRectangle r2;
+CRectangle &amp; rr = r2;
+rr.w = 5;
+rr.Init(3,4); //rr的值变了，r2的值也变
+</code></pre>
+<h3 id="类的成员函数的另一种写法">类的成员函数的另一种写法</h3>
+<pre><code class="language-c++">int CRectangle::Area() {
+return w * h;
+}
+int CRectangle::Perimeter() {
+return 2 * ( w + h );
+}
+void CRectangle::Init( int w_, int h_ ) {
+w = w_; h = h_;
+}
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://lushunn.github.io/post/wa-keng-ctc">
+                  <h3 class="post-title">
+                    挖坑 ctc
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '3a52f974af9281a9e5db',
+        clientSecret: 'a277c665ff999c49c800699f4e0782e75f646fad',
+        repo: 'lushunn.github.io',
+        owner: 'lushunn',
+        admin: ['lushunn'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
