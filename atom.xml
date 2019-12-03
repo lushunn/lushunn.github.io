@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lushunn.github.io</id>
     <title>hi~</title>
-    <updated>2019-10-13T10:20:18.667Z</updated>
+    <updated>2019-12-03T15:47:13.622Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lushunn.github.io"/>
     <link rel="self" href="https://lushunn.github.io/atom.xml"/>
@@ -251,7 +251,7 @@ w = w_; h = h_;
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[挖坑 ctc]]></title>
+        <title type="html"><![CDATA[挖坑 C++备忘录]]></title>
         <id>https://lushunn.github.io/post/wa-keng-ctc</id>
         <link href="https://lushunn.github.io/post/wa-keng-ctc">
         </link>
@@ -260,12 +260,90 @@ w = w_; h = h_;
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[挖坑 推荐系统入门]]></title>
+        <title type="html"><![CDATA[《推荐系统实践》读书笔记]]></title>
         <id>https://lushunn.github.io/post/wa-keng-tui-jian-xi-tong-start</id>
         <link href="https://lushunn.github.io/post/wa-keng-tui-jian-xi-tong-start">
         </link>
         <updated>2019-09-28T02:12:51.000Z</updated>
-        <content type="html"><![CDATA[<p>待写</p>
+        <content type="html"><![CDATA[<h1 id="目录">目录</h1>
+<p>[toc]</p>
+<hr>
+<h1 id="第一章-好的推荐系统">第一章 好的推荐系统</h1>
+<h2 id="1什么是好的推荐系统">1.什么是好的推荐系统</h2>
+<p>好的推荐系统能使用户、物品提供者和提供推荐系统的平台三方达到共赢。<br>
+<img src="https://lushunn.github.io/post-images/1575381642094.png" alt=""></p>
+<h2 id="2推荐系统实验方法">2.推荐系统实验方法</h2>
+<p>在推荐系统中，主要有3种评测推荐效果的实验方法，即离线实验（offline experiment）、用户调（user study）和在线实验（online experiment）。</p>
+<ul>
+<li>
+<p>离线实验<br>
+(1) 通过日志系统获得用户行为数据，并按照一定格式生成一个标准的数据集；<br>
+(2) 将数据集按照一定的规则分成训练集和测试集；<br>
+(3) 在训练集上训练用户兴趣模型，在测试集上进行预测；<br>
+(https://lushunn.github.io/post-images/1575382135010.png)</p>
+</li>
+<li>
+<p>用户调查</p>
+</li>
+<li>
+<p>在线实验<br>
+下图是一个简单的AB测试系统。用户进入网站后，流量分配系统决定用户是否需要被进<br>
+行AB测试，如果需要的话，流量分配系统会给用户打上在测试中属于什么分组的标签。然后用<br>
+户浏览网页，而用户在浏览网页时的行为都会被通过日志系统发回后台的日志数据库。此时，如<br>
+果用户有测试分组的标签，那么该标签也会被发回后台数据库。在后台，实验人员的工作首先是<br>
+配置流量分配系统，决定满足什么条件的用户参加什么样的测试。其次，实验人员需要统计日志<br>
+数据库中的数据，通过评测系统生成不同分组用户的实验报告，并比较和评测实验结果。<br>
+<img src="https://lushunn.github.io/post-images/1575382258504.png" alt=""><br>
+一般来说，一个新的推荐算法最终上线，需要完成上面所说的3个实验。<br>
+1)首先，需要通过离线实验证明它在很多离线指标上优于现有的算法。<br>
+2)然后，需要通过用户调查确定它的用户满意度不低于现有的算法。<br>
+3)最后，通过在线的AB测试确定它在我们关心的指标上优于现有的算法。</p>
+</li>
+</ul>
+<h3 id="3评测指标">3.评测指标</h3>
+<h4 id="1用户满意度">1)用户满意度</h4>
+<h4 id="2预测准确度">2)预测准确度</h4>
+<ul>
+<li>评分预测<br>
+<img src="https://lushunn.github.io/post-images/1575382587613.png" alt=""></li>
+<li>TopN推荐<br>
+<img src="https://lushunn.github.io/post-images/1575382664978.png" alt=""></li>
+<li>覆盖率<br>
+覆盖率（coverage）描述一个推荐系统对物品长尾的发掘能力。覆盖率有不同的定义方法，最简单的定义为推荐系统能够推荐出来的物品占总物品集合的比例。假设系统的用户集合为U，推荐系统给每个用户推荐一个长度为N的物品列表R(u)<br>
+<img src="https://lushunn.github.io/post-images/1575382755052.png" alt=""><br>
+覆盖率是一个内容提供商会关心的指标，上面的定义过于粗略。覆盖率为100%的系统可以有无数的物品流行度分布。为了更细致地描述推荐系统发掘长尾的能力，需要统计推荐列表中不同物品出现次数的分布。如果所有的物品都出现在推荐列表中，且出现的次数差不多，那么推荐系统发掘长尾的能力就很好。<br>
+<img src="https://lushunn.github.io/post-images/1575383569449.png" alt=""></li>
+<li>多样性<br>
+<img src="https://lushunn.github.io/post-images/1575383639902.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1575383644382.png" alt=""></li>
+<li>新颖度</li>
+<li>惊喜度</li>
+<li>信任度</li>
+<li>实时性<br>
+（1）推荐系统需要实时地更新推荐列表来满足用户新的行为变化。<br>
+（2）推荐系统需要能够将新加入系统的物品推荐给用户。</li>
+<li>健壮性</li>
+</ul>
+<h1 id="利用用户行为数据">利用用户行为数据</h1>
+<p>基于用户行为分析的推荐算法是个性化推荐系统的重要算法，学术界一般将这种类型的算法<br>
+称为协同过滤算法。</p>
+<p>用户行为在个性化推荐系统中一般分两种——显性反馈行为（explicit feedback）和隐性反馈<br>
+行为（implicit feedback）。显性反馈行为包括用户明确表示对物品喜好的行为。隐性反馈行为指的是那些不能明确反应用户喜好的行为。最具代表性的隐性反馈行为就是页面浏览行为。<br>
+<img src="https://lushunn.github.io/post-images/1575384226268.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1575384235006.png" alt=""></p>
+<h2 id="1用户行为分析">1.用户行为分析</h2>
+<p>很多关于互联网数据的研究发现，互联网上的很多数据分布都满足一种称为Power Law的分布，这个分布在互联网领域也称长尾分布。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">f(x)=ax^k 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8991079999999999em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>（1）不管是物品的流行度还是用户的活跃度，都近似于长尾分布。<br>
+（2）用户越活跃，越倾向于浏览冷门的物品</p>
+<h2 id="2基于邻域的算法">2.基于邻域的算法</h2>
+<h3 id="基于用户的协同过滤算法">基于用户的协同过滤算法</h3>
+<p>基于用户的协同过滤算法主要包括两个步骤。<br>
+(1) 找到和目标用户兴趣相似的用户集合。<br>
+<img src="https://lushunn.github.io/post-images/1575385068600.png" alt=""><br>
+直接对两两用户都利用余弦相似度计算相似度算法时间复杂度较大，用户数很大时非常耗时。事<br>
+(2) 找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户。</p>
 ]]></content>
     </entry>
     <entry>
