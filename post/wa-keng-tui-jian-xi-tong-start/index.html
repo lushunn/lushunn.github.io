@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1575388030443">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1575475126024">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1575388030443" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1575475126024" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -99,7 +99,7 @@
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
             <h2 class="post-title">《推荐系统实践》读书笔记</h2>
-            <div class="post-date">2019-09-28</div>
+            <div class="post-date">2019-12-04</div>
             
             <div class="post-content">
               <h1 id="目录">目录</h1>
@@ -179,17 +179,96 @@
 <p>基于用户的协同过滤算法主要包括两个步骤。<br>
 (1) 找到和目标用户兴趣相似的用户集合。<br>
 <img src="https://lushunn.github.io/post-images/1575385068600.png" alt=""><br>
-直接对两两用户都利用余弦相似度计算相似度算法时间复杂度较大，用户数很大时非常耗时。事<br>
-(2) 找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户。</p>
+直接对两两用户都利用余弦相似度计算相似度算法时间复杂度较大，用户数很大时非常耗时。<br>
+改进1:</p>
+<p>思路：我们可以首先计算出 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∣</mo><mi>N</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>⋂</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo><mo>∣</mo><mpadded width="0px"><mo></mo></mpadded><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mid N(u) \bigcap N(v)\mid \not=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋂</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mrel"><span class="mord"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="rlap"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="inner"><span class="mrel"></span></span><span class="fix"></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span></span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span> 的用户对(u,v)，然后再对这种情况除以分母<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msqrt><mrow><mo>∣</mo><mi>N</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>⋂</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo><mo>∣</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{\mid N(u) \bigcap N(v) \mid}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.30500499999999997em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.934995em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋂</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span></span></span><span style="top:-2.894995em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119c34,79.3,68.167,
+158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120c340,-704.7,510.7,-1060.3,512,-1067
+c4.7,-7.3,11,-11,19,-11H40000v40H1012.3s-271.3,567,-271.3,567c-38.7,80.7,-84,
+175,-136,283c-52,108,-89.167,185.3,-111.5,232c-22.3,46.7,-33.8,70.3,-34.5,71
+c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1s-109,-253,-109,-253c-72.7,-168,-109.3,
+-252,-110,-252c-10.7,8,-22,16.7,-34,26c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26
+s76,-59,76,-59s76,-60,76,-60z M1001 80H40000v40H1012z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.30500499999999997em;"><span></span></span></span></span></span></span></span></span>。<br>
+具体实现：<br>
+为此，可以首先建立物品到用户的倒排表，对于每个物品都保存对该物品产生过行为的用户<br>
+列表。令稀疏矩阵<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo>[</mo><mi>u</mi><mo>]</mo><mo>[</mo><mi>v</mi><mo>]</mo><mo>=</mo><mo>∣</mo><mi>N</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>⋂</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo><mo>∣</mo></mrow><annotation encoding="application/x-tex">C[u][v]=\mid N(u)\bigcap N(v)\mid</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mopen">[</span><span class="mord mathdefault">u</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋂</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span></span></span></span>。那么，假设用户u和用户v同时属于倒排表中K个物品对应的用户列表，就有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo>[</mo><mi>u</mi><mo>]</mo><mo>[</mo><mi>v</mi><mo>]</mo><mo>=</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">C[u][v]=K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mopen">[</span><span class="mord mathdefault">u</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span>。从而，可以扫描倒排表中每个物品对应的用户列表，将用户列<br>
+表中的两两用户对应的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo>[</mo><mi>u</mi><mo>]</mo><mo>[</mo><mi>v</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">C[u][v]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mopen">[</span><span class="mord mathdefault">u</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">]</span></span></span></span>加1，最终就可以得到所有用户之间不为0的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo>[</mo><mi>u</mi><mo>]</mo><mo>[</mo><mi>v</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">C[u][v]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mopen">[</span><span class="mord mathdefault">u</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">]</span></span></span></span>。<br>
+倒排表的生成（物品:a,b,c,d 用户:A,B,C,D）<br>
+<img src="https://lushunn.github.io/post-images/1575471780624.png" alt=""></p>
+<p>(2) 找到这个集合中的用户喜欢的，且目标用户没有听说过的物品推荐给目标用户。<br>
+<img src="https://lushunn.github.io/post-images/1575471908075.png" alt=""></p>
+<h3 id="用户相似度计算的改进">用户相似度计算的改进</h3>
+<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1575472013099.png" alt=""></figure>
+<h3 id="基于物品的协同过滤算法">基于物品的协同过滤算法</h3>
+<p>需求：随着网站的用户数目越来越大，计算用户兴趣相似度矩阵将越来越困难，其运算时间复杂度和空<br>
+间复杂度的增长和用户数的增长近似于平方关系。<br>
+基于物品的协同过滤算法主要分为两步。<br>
+(1) 计算物品之间的相似度。<br>
+<img src="https://lushunn.github.io/post-images/1575472496337.png" alt=""></p>
+<p><img src="https://lushunn.github.io/post-images/1575472555034.png" alt=""><br>
+(2) 根据物品的相似度和用户的历史行为给用户生成推荐列表。<br>
+<img src="https://lushunn.github.io/post-images/1575472653595.png" alt=""></p>
+<h3 id="用户活跃度对物品相似度的影响">用户活跃度对物品相似度的影响</h3>
+<figure data-type="image" tabindex="2"><img src="https://lushunn.github.io/post-images/1575472771304.png" alt=""></figure>
+<h3 id="物品相似度的归一化">物品相似度的归一化</h3>
+<p>将ItemCF的相似度矩阵按最大值归一化，好处不仅仅在于增加推荐的准确度，它还可以提高推荐的覆盖率和多样性。</p>
+<h3 id="usercf和itemcf的综合比较">UserCF和ItemCF的综合比较</h3>
+<figure data-type="image" tabindex="3"><img src="https://lushunn.github.io/post-images/1575472925837.png" alt=""></figure>
+<ul>
+<li>哈利波特问题<br>
+<img src="https://lushunn.github.io/post-images/1575473550336.png" alt=""></li>
+</ul>
+<h3 id="隐语义模型">隐语义模型</h3>
+<p>UserCF：首先需要找到和他们看了同样书的其他用户（兴趣相似的用户），然后给他<br>
+们推荐那些用户喜欢的其他书。<br>
+ItemCF：需要给他们推荐和他们已经看的书相似的书，比如作者B看了很多关于数据<br>
+挖掘的书，可以给他推荐机器学习或者模式识别方面的书。<br>
+新的算法思路：可以对书和物品的兴趣进行分类。对于某个用户，首先得到他的兴趣分类，<br>
+然后从分类中挑选他可能喜欢的物品。隐含语义分析技术，因为采取基于用户行为统计的自动聚类，较好的满足了新的算法思路所带来的问题。<br>
+<img src="https://lushunn.github.io/post-images/1575473764530.png" alt=""><br>
+如何解决隐性反馈数据集上应用LFM解决TopN推荐的没有负样本这个问题：<br>
+1.对于一个用户，从他没有过行为的物品中均匀采样出一些物品作为负样本。<br>
+2. 对于一个用户，从他没有过行为的物品中采样出一些物品作为负样本，但采样时，保证<br>
+每个用户的正负样本数目相当。<br>
+3.对于一个用户，从他没有过行为的物品中采样出一些物品作为负样本，但采样时，偏重<br>
+采样不热门的物品。<br>
+通过2011年的KDD Cup的Yahoo! Music推荐系统比赛的采样方案<br>
+1.对每个用户，要保证正负样本的平衡（数目相似）。<br>
+2.对每个用户采样负样本时，要选取那些很热门，而用户却没有行为的物品。</p>
+<h3 id="基于lfm的实际系统的例子">基于LFM的实际系统的例子</h3>
+<figure data-type="image" tabindex="4"><img src="https://lushunn.github.io/post-images/1575474097153.png" alt=""></figure>
+<p>遇到的困难：经典的LFM模型每次训练时都需要扫描所有的用户行为记录，这样才能计算出用户隐类向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><msub><mi>p</mi><mi>u</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(p_u)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>和物品隐类向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(q_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。LFM的每次训练都很耗时，一般在实际应用中只能每天训练一次，并且计算出所有用户的推荐结果。从而LFM模型不能因为用户行为的变化实时地调整推荐结果来满足用户最近的行为。在新闻推荐中，冷启动问题非常明显。每天都会有大量新的新闻。这些新闻会在很短的时间内获得很多人的关注，但也会在很短的时间内失去用户的关注。因此，它们的生命周期很短，而推荐算法需要在它们短暂的生命周期内就将其推荐给对它们感兴趣的用户。<br>
+解决方法：<br>
+<img src="https://lushunn.github.io/post-images/1575474302058.png" alt=""></p>
+<h3 id="lfm和基于领域的方法的比较">LFM和基于领域的方法的比较</h3>
+<p>1)理论基础：LFM具有比较好的理论基础，它是一种学习方法，通过优化一个设定的指标建立最优的模型。基于邻域的方法更多的是一种基于统计的方法，并没有学习过程。<br>
+2)离线计算的空间复杂度：基于邻域的方法需要维护一张离线的相关表。在离线计算相关表的过程中，如果用户/物品数很多，将会占据很大的内存。LFM只需占用很少的内存。<br>
+3)离线计算的时间复杂度：总体上来说两者没有太大差别。<br>
+4)在线实时推荐：UserCF和ItemCF在线服务算法需要将相关表缓存在内存中，然后可以在线进行实时的预测。LFM在给用户生成推荐列表时，需要计算用户对所有物品的兴趣权重，然后排名，返回权重最大的N个物品。那么，在物品数很多时，这一过程的时间复杂度非常高，LFM不太适合用于物品数非常庞大的系统，也不能实时计算。<br>
+5)推荐解释：ItemCF算法支持很好的推荐解释，它可以利用用户的历史行为解释推荐结果。但LFM无法提供这样的解释。</p>
+<h3 id="基于图的模型">基于图的模型</h3>
+<h4 id="1用户行为数据的二分图表示">1.用户行为数据的二分图表示</h4>
+<p>基于图的模型（graph-based model）是推荐系统中的重要内容。用户行为数据是由一系列二元组组成的，其中每个二元组(u, i)表示用户u对物品i产生过行为。这种数据集很容易用一个二分图表示。(用户节点A,B,C和物品节点a、b、c,d)<br>
+<img src="https://lushunn.github.io/post-images/1575474753472.png" alt=""></p>
+<h4 id="2基于图的推荐算法">2.基于图的推荐算法</h4>
+<p>基于上一步，下面的任务就是在二分图上给用户进行个性化推荐。那么给用户u推荐物品的任务就可以转化为度量用户顶点<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mi>u</mi></msub></mrow><annotation encoding="application/x-tex">v_u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mi>u</mi></msub></mrow><annotation encoding="application/x-tex">v_u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>没有边直接相连的物品节点在图上的相关性，相关性越高的物品在推荐列表中的权重就越高。<br>
+<img src="https://lushunn.github.io/post-images/1575475124113.png" alt=""></p>
 
             </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://lushunn.github.io/tag/1dwTW_nx8" class="tag">
+                    机器学习
+                  </a>
+                
+              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://lushunn.github.io/post/wa-keng-t-sne">
+                <a href="https://lushunn.github.io/post/c-wk1-xue-xi-bi-ji-mian-xiang-dui-xiang-cheng-xu-she-ji">
                   <h3 class="post-title">
-                    无监督学习Neighbor Embedding近邻嵌入--从LLE 到 T-SNE 
+                     C++ wk1学习笔记 面向对象程序设计
                   </h3>
                 </a>
               </div>
