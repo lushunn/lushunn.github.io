@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lushunn.github.io</id>
     <title>hi~</title>
-    <updated>2019-12-04T16:00:27.749Z</updated>
+    <updated>2019-12-05T13:18:08.129Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lushunn.github.io"/>
     <link rel="self" href="https://lushunn.github.io/atom.xml"/>
@@ -17,7 +17,37 @@
         </link>
         <updated>2019-12-04T14:51:06.000Z</updated>
         <content type="html"><![CDATA[<h1 id="目录">目录</h1>
-<p>[toc]</p>
+<!-- TOC -->
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%A5%BD%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F">第一章 好的推荐系统</a>
+<ul>
+<li><a href="#1%E4%BB%80%E4%B9%88%E6%98%AF%E5%A5%BD%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F">1.什么是好的推荐系统</a></li>
+<li><a href="#2%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%96%B9%E6%B3%95">2.推荐系统实验方法</a></li>
+<li><a href="#3%E8%AF%84%E6%B5%8B%E6%8C%87%E6%A0%87">3.评测指标</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%88%A9%E7%94%A8%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E6%95%B0%E6%8D%AE">第二章利用用户行为数据</a></li>
+<li><a href="#1%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E5%88%86%E6%9E%90">1.用户行为分析</a></li>
+<li><a href="#2%E5%9F%BA%E4%BA%8E%E9%82%BB%E5%9F%9F%E7%9A%84%E7%AE%97%E6%B3%95">2.基于邻域的算法</a>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E7%94%A8%E6%88%B7%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95">基于用户的协同过滤算法</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E7%9A%84%E6%94%B9%E8%BF%9B">用户相似度计算的改进</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E7%89%A9%E5%93%81%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95">基于物品的协同过滤算法</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E6%B4%BB%E8%B7%83%E5%BA%A6%E5%AF%B9%E7%89%A9%E5%93%81%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9A%84%E5%BD%B1%E5%93%8D">用户活跃度对物品相似度的影响</a></li>
+<li><a href="#%E7%89%A9%E5%93%81%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%9A%84%E5%BD%92%E4%B8%80%E5%8C%96">物品相似度的归一化</a></li>
+<li><a href="#usercf%E5%92%8Citemcf%E7%9A%84%E7%BB%BC%E5%90%88%E6%AF%94%E8%BE%83">UserCF和ItemCF的综合比较</a></li>
+<li><a href="#%E9%9A%90%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B">隐语义模型</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8Elfm%E7%9A%84%E5%AE%9E%E9%99%85%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BE%8B%E5%AD%90">基于LFM的实际系统的例子</a></li>
+<li><a href="#lfm%E5%92%8C%E5%9F%BA%E4%BA%8E%E9%A2%86%E5%9F%9F%E7%9A%84%E6%96%B9%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83">LFM和基于领域的方法的比较</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E6%A8%A1%E5%9E%8B">3.基于图的模型</a>
+<ul>
+<li><a href="#1%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%8C%E5%88%86%E5%9B%BE%E8%A1%A8%E7%A4%BA">用户行为数据的二分图表示</a></li>
+<li><a href="#2%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">基于图的推荐算法</a><!-- /TOC --></li>
+</ul>
+</li>
+</ul>
 <hr>
 <h1 id="第一章-好的推荐系统">第一章 好的推荐系统</h1>
 <h2 id="1什么是好的推荐系统">1.什么是好的推荐系统</h2>
@@ -31,7 +61,7 @@
 (1) 通过日志系统获得用户行为数据，并按照一定格式生成一个标准的数据集；<br>
 (2) 将数据集按照一定的规则分成训练集和测试集；<br>
 (3) 在训练集上训练用户兴趣模型，在测试集上进行预测；<br>
-(https://lushunn.github.io/post-images/1575382135010.png)</p>
+<img src="https://lushunn.github.io/post-images/1575382135010.png" alt=""></p>
 </li>
 <li>
 <p>用户调查</p>
@@ -52,8 +82,8 @@
 </li>
 </ul>
 <h3 id="3评测指标">3.评测指标</h3>
-<h4 id="1用户满意度">1)用户满意度</h4>
-<h4 id="2预测准确度">2)预测准确度</h4>
+<p>1)用户满意度<br>
+2)预测准确度</p>
 <ul>
 <li>评分预测<br>
 <img src="https://lushunn.github.io/post-images/1575382587613.png" alt=""></li>
@@ -75,8 +105,8 @@
 （2）推荐系统需要能够将新加入系统的物品推荐给用户。</li>
 <li>健壮性</li>
 </ul>
-<h1 id="利用用户行为数据">利用用户行为数据</h1>
-<p>基于用户行为分析的推荐算法是个性化推荐系统的重要算法，学术界一般将这种类型的算法<br>
+<p>#第二章利用用户行为数据<br>
+基于用户行为分析的推荐算法是个性化推荐系统的重要算法，学术界一般将这种类型的算法<br>
 称为协同过滤算法。</p>
 <p>用户行为在个性化推荐系统中一般分两种——显性反馈行为（explicit feedback）和隐性反馈<br>
 行为（implicit feedback）。显性反馈行为包括用户明确表示对物品喜好的行为。隐性反馈行为指的是那些不能明确反应用户喜好的行为。最具代表性的隐性反馈行为就是页面浏览行为。<br>
@@ -140,14 +170,16 @@ ItemCF：需要给他们推荐和他们已经看的书相似的书，比如作�
 然后从分类中挑选他可能喜欢的物品。隐含语义分析技术，因为采取基于用户行为统计的自动聚类，较好的满足了新的算法思路所带来的问题。<br>
 <img src="https://lushunn.github.io/post-images/1575473764530.png" alt=""><br>
 如何解决隐性反馈数据集上应用LFM解决TopN推荐的没有负样本这个问题：<br>
-1.对于一个用户，从他没有过行为的物品中均匀采样出一些物品作为负样本。<br>
-2. 对于一个用户，从他没有过行为的物品中采样出一些物品作为负样本，但采样时，保证<br>
+1.对于一个用户，从他没有过行为的物品中均匀采样出一些物品作为负样本。</p>
+<ol>
+<li>对于一个用户，从他没有过行为的物品中采样出一些物品作为负样本，但采样时，保证<br>
 每个用户的正负样本数目相当。<br>
 3.对于一个用户，从他没有过行为的物品中采样出一些物品作为负样本，但采样时，偏重<br>
 采样不热门的物品。<br>
 通过2011年的KDD Cup的Yahoo! Music推荐系统比赛的采样方案<br>
 1.对每个用户，要保证正负样本的平衡（数目相似）。<br>
-2.对每个用户采样负样本时，要选取那些很热门，而用户却没有行为的物品。</p>
+2.对每个用户采样负样本时，要选取那些很热门，而用户却没有行为的物品。</li>
+</ol>
 <h3 id="基于lfm的实际系统的例子">基于LFM的实际系统的例子</h3>
 <figure data-type="image" tabindex="4"><img src="https://lushunn.github.io/post-images/1575474097153.png" alt=""></figure>
 <p>遇到的困难：经典的LFM模型每次训练时都需要扫描所有的用户行为记录，这样才能计算出用户隐类向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><msub><mi>p</mi><mi>u</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(p_u)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>和物品隐类向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><msub><mi>q</mi><mi>i</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">(q_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。LFM的每次训练都很耗时，一般在实际应用中只能每天训练一次，并且计算出所有用户的推荐结果。从而LFM模型不能因为用户行为的变化实时地调整推荐结果来满足用户最近的行为。在新闻推荐中，冷启动问题非常明显。每天都会有大量新的新闻。这些新闻会在很短的时间内获得很多人的关注，但也会在很短的时间内失去用户的关注。因此，它们的生命周期很短，而推荐算法需要在它们短暂的生命周期内就将其推荐给对它们感兴趣的用户。<br>
