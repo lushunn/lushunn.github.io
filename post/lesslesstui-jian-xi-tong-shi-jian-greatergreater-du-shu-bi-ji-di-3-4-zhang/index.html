@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1575557678129">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1575647946063">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1575557678129" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1575647946063" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -102,7 +102,29 @@
             <div class="post-date">2019-12-05</div>
             
             <div class="post-content">
-              <h1 id="第三章-推荐系统冷启动问题">第三章 推荐系统冷启动问题</h1>
+              <h1 id="目录">目录</h1>
+<!-- TOC -->
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98">第三章 推荐系统冷启动问题</a>
+<ul>
+<li><a href="#%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98%E7%AE%80%E4%BB%8B">冷启动问题简介</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E4%BF%A1%E6%81%AF">利用用户注册信息</a></li>
+<li><a href="#%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84%E7%89%A9%E5%93%81%E5%90%AF%E5%8A%A8%E7%94%A8%E6%88%B7%E7%9A%84%E5%85%B4%E8%B6%A3">选择合适的物品启动用户的兴趣</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8%E7%89%A9%E5%93%81%E7%9A%84%E5%86%85%E5%AE%B9%E4%BF%A1%E6%81%AF">利用物品的内容信息</a></li>
+<li><a href="#%E5%8F%91%E6%8C%A5%E4%B8%93%E5%AE%B6%E7%9A%84%E4%BD%9C%E7%94%A8">发挥专家的作用</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%88%A9%E7%94%A8%E7%94%A8%E6%88%B7%E6%A0%87%E7%AD%BE%E6%95%B0%E6%8D%AE">第四章 利用用户标签数据</a>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E6%A0%87%E7%AD%BE%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F">基于标签的推荐系统</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">基于图的推荐算法</a></li>
+<li><a href="#%E7%94%A8%E5%9B%BE%E6%A8%A1%E5%9E%8B%E8%A7%A3%E9%87%8A%E5%89%8D%E9%9D%A2%E7%9A%84%E7%AE%80%E5%8D%95%E7%AE%97%E6%B3%95">用图模型解释前面的简单算法</a></li>
+<li><a href="#%E7%BB%99%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90%E6%A0%87%E7%AD%BE">给用户推荐标签</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+<h1 id="第三章-推荐系统冷启动问题">第三章 推荐系统冷启动问题</h1>
 <h2 id="冷启动问题简介">冷启动问题简介</h2>
 <p>1.用户冷启动 2.物品冷启动3.系统冷启动<br>
 解决方法：<br>
@@ -173,6 +195,18 @@ LDA的计算过程包括初始化和迭代两部分。首先要对z进行初始�
 2)去除因词根不同造成的同义词，比如 recommender system和recommendation system；<br>
 3)去除因分隔符造成的同义词，比如 collaborative_filtering和collaborative-filtering 为了控制标签的质量，很多网站也采用了让用户进行反馈的思想，即让用户告诉系统某个标签是否合适。</p>
 <h2 id="基于图的推荐算法">基于图的推荐算法</h2>
+<p>我们需要定义3种不同的顶点，即用户顶点、物品顶点和标签顶点.表示用户u给物品i打了标签b的用户标签行为(u,i,b)，在定义出用户—物品—标签图后，我们可以用第2章提到的PersonalRank算法计算所有物品节点相对于当前用户节点在图上的相关性，然后按照相关性从大到小的排序，给用户推荐排名最高的N个物品。<br>
+<img src="https://lushunn.github.io/post-images/1575646440140.png" alt=""></p>
+<h2 id="用图模型解释前面的简单算法">用图模型解释前面的简单算法</h2>
+<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1575647430788.png" alt=""></figure>
+<h2 id="给用户推荐标签">给用户推荐标签</h2>
+<p>如何给用户推荐标签</p>
+<ul>
+<li>给用户u推荐整个系统里最热门的标签</li>
+<li>给用户u推荐物品i上最热门的标签</li>
+<li>给用户u推荐他自己经常使用的标签</li>
+<li>前面两种的融合（这里记为HybridPopularTags），该方法通过一个系数将上面的推荐结果线性加权，然后生成最终的推荐结果。（在将两个列表线性相加时都将两个列表按最大值做了归一化，这样的好处是便于控制两个列表对最终结果的影响，而不至于因为物品非常热门而淹没用户对推荐结果的影响，或者因为用户非常活跃而淹没物品对推荐结果的影响。）</li>
+</ul>
 
             </div>
             
