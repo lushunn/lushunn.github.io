@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lushunn.github.io</id>
     <title>hi~</title>
-    <updated>2019-12-09T14:14:18.069Z</updated>
+    <updated>2019-12-09T14:29:34.769Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lushunn.github.io"/>
     <link rel="self" href="https://lushunn.github.io/atom.xml"/>
@@ -16,7 +16,50 @@
         <link href="https://lushunn.github.io/post/lesslesstui-jian-xi-tong-shi-jian-greatergreater-du-shu-bi-ji-di-5-6-zhang">
         </link>
         <updated>2019-12-06T15:59:37.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="利用上下文信息">利用上下文信息</h1>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#%E5%88%A9%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BF%A1%E6%81%AF">利用上下文信息</a>
+<ul>
+<li><a href="#%E6%97%B6%E9%97%B4%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BF%A1%E6%81%AF">时间上下文信息</a>
+<ul>
+<li><a href="#%E6%97%B6%E9%97%B4%E6%95%88%E5%BA%94%E7%AE%80%E4%BB%8B">时间效应简介</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4%E7%89%B9%E6%80%A7%E7%9A%84%E5%88%86%E6%9E%90">系统时间特性的分析</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E6%97%B6%E6%80%A7">推荐系统的实时性</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%9A%E6%A0%B7%E6%80%A7">推荐算法的时间多样性</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E4%B8%8A%E4%B8%8B%E6%96%87%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">时间上下文推荐算法</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E6%AE%B5%E5%9B%BE%E6%A8%A1%E5%9E%8B">时间段图模型</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9C%B0%E7%82%B9%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BF%A1%E6%81%AF">地点上下文信息</a>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E4%BD%8D%E7%BD%AE%E7%9A%84%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">基于位置的推荐算法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%88%A9%E7%94%A8%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE">利用社交网络数据</a>
+<ul>
+<li><a href="#%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE%E4%B8%AD%E7%9A%84%E9%95%BF%E5%B0%BE%E5%88%86%E5%B8%83">社交网络数据中的长尾分布</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E7%9A%84%E6%8E%A8%E8%8D%90">基于社交网络的推荐</a>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E9%82%BB%E5%9F%9F%E7%9A%84%E7%A4%BE%E4%BC%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">基于邻域的社会化推荐算法</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E7%A4%BE%E4%BC%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">基于图的社会化推荐算法</a></li>
+<li><a href="#%E5%AE%9E%E9%99%85%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E7%A4%BE%E4%BC%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95">实际系统中的社会化推荐算法</a></li>
+<li><a href="#%E7%A4%BE%E4%BC%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F">社会化推荐系统和协同过滤推荐系统</a></li>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%B5%81%E6%8E%A8%E8%8D%90">信息流推荐</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%99%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90%E5%A5%BD%E5%8F%8B">给用户推荐好友</a>
+<ul>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E7%9A%84%E5%8C%B9%E9%85%8D">基于内容的匹配</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E5%85%B1%E5%90%8C%E5%85%B4%E8%B6%A3%E7%9A%84%E5%A5%BD%E5%8F%8B%E6%8E%A8%E8%8D%90">基于共同兴趣的好友推荐</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%9A%84%E5%A5%BD%E5%8F%8B%E6%8E%A8%E8%8D%90">基于社交网络图的好友推荐</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="利用上下文信息">利用上下文信息</h1>
 <h2 id="时间上下文信息">时间上下文信息</h2>
 <h3 id="时间效应简介">时间效应简介</h3>
 <ul>
