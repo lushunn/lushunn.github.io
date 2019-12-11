@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1575902902942">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1576073027077">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -46,7 +46,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1575902902942" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1576073027077" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -122,7 +122,41 @@
             <div class="post-date">2019-12-09</div>
             
             <div class="post-content">
-              <h1 id="推荐系统实例">推荐系统实例</h1>
+              <p><ul class="markdownIt-TOC">
+<li><a href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E4%BE%8B">推荐系统实例</a>
+<ul>
+<li><a href="#%E5%A4%96%E5%9B%B4%E6%9E%B6%E6%9E%84">外围架构</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84">推荐系统架构</a></li>
+<li><a href="#%E6%8E%A8%E8%8D%90%E5%BC%95%E6%93%8E%E7%9A%84%E6%9E%B6%E6%9E%84">推荐引擎的架构</a>
+<ul>
+<li><a href="#%E7%94%9F%E6%88%90%E7%94%A8%E6%88%B7%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F">生成用户特征向量</a></li>
+<li><a href="#%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E7%9B%B8%E5%85%B3%E6%8E%A8%E8%8D%90">特征—物品相关推荐</a></li>
+<li><a href="#%E8%BF%87%E6%BB%A4%E6%A8%A1%E5%9D%97">过滤模块</a></li>
+<li><a href="#%E6%8E%92%E5%90%8D%E6%A8%A1%E5%9D%97">排名模块</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%AF%84%E5%88%86%E9%A2%84%E6%B5%8B%E9%97%AE%E9%A2%98">评分预测问题</a>
+<ul>
+<li><a href="#%E8%AF%84%E5%88%86%E9%A2%84%E6%B5%8B%E7%AE%97%E6%B3%95">评分预测算法</a>
+<ul>
+<li><a href="#%E5%B9%B3%E5%9D%87%E5%80%BC">平均值</a>
+<ul>
+<li><a href="#%E7%94%A8%E6%88%B7%E5%88%86%E7%B1%BB%E5%AF%B9%E7%89%A9%E5%93%81%E5%88%86%E7%B1%BB%E7%9A%84%E5%B9%B3%E5%9D%87%E5%80%BC">用户分类对物品分类的平均值</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8E%E9%82%BB%E5%9F%9F%E7%9A%84%E6%96%B9%E6%B3%95">基于邻域的方法</a></li>
+<li><a href="#%E9%9A%90%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9E%8B">隐语义模型与矩阵分解模型</a></li>
+<li><a href="#%E5%8A%A0%E5%85%A5%E6%97%B6%E9%97%B4%E4%BF%A1%E6%81%AF">加入时间信息</a></li>
+<li><a href="#%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88">模型融合</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="推荐系统实例">推荐系统实例</h1>
 <h2 id="外围架构">外围架构</h2>
 <p><img src="https://lushunn.github.io/post-images/1575902726242.png" alt=""><br>
 一般来说，需要实时存取的数据存储在数据库和缓存中，而大规模的非实时地存取数据存储在分布式<br>
@@ -130,7 +164,118 @@
 给用户进行实时推荐。</p>
 <h2 id="推荐系统架构">推荐系统架构</h2>
 <p>推荐系统需要由多个推荐引擎组成，每个推荐引擎负责一类特征和一种任务，而推荐系统的任务只是将推荐引擎的结果按照一定权重或者优先级合并、排序然后返回。<br>
-<img src="https://lushunn.github.io/post-images/1575902890988.png" alt=""></p>
+<img src="https://lushunn.github.io/post-images/1575902890988.png" alt=""><br>
+好处：</p>
+<ul>
+<li>可以方便地增加/删除引擎，控制不同引擎对推荐结果的影响。</li>
+<li>可以实现推荐引擎级别的用户反馈。</li>
+</ul>
+<h2 id="推荐引擎的架构">推荐引擎的架构</h2>
+<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1575990317173.png" alt=""></figure>
+<ul>
+<li>A负责从数据库或者缓存中拿到用户行为数据，通过分析不同行为，生成当前用户的特征向量。不过如果是使用非行为特征，就不需要使用行为提取和分析模块了。该模块的输出是用户特征向量。</li>
+<li>B负责将用户的特征向量通过特征-物品相关矩阵转化为初始推荐物品列表。</li>
+<li>C负责对初始的推荐列表进行过滤、排名等处理，从而生成最终的推荐结果。</li>
+</ul>
+<h3 id="生成用户特征向量">生成用户特征向量</h3>
+<p>用户的特征包括两种，一种是用户的注册信息中可以提取出来的，另一种特征主要是从用户的行为中计算出来的。<br>
+一个特征向量由特征以及特征的权重组成，在利用用户行为计算特征向量时需要考虑以下因素。</p>
+<ul>
+<li>用户行为的种类</li>
+<li>用户行为产生的时间</li>
+<li>用户行为的次数</li>
+<li>物品的热门程度</li>
+</ul>
+<h3 id="特征物品相关推荐">特征—物品相关推荐</h3>
+<p>在得到用户的特征向量后，可以根据离线的相关表得到初始的物品推荐列表，存储和它最相关的N个物品的ID。特征—物品相关推荐模块还可以接受一个候选物品集合。候选物品集合的目的是保证推荐结果只包含候选物品集合中的物品。<br>
+什么不在过滤模块中过滤掉不在候选集中的物品：防止错失推荐低热度的物品。（候选物品集合较小的情况下）</p>
+<h3 id="过滤模块">过滤模块</h3>
+<p>在得到初步的推荐列表后，还不能把这个列表展现给用户，首先需要按照产品需求对结果进<br>
+行过滤，过滤掉那些不符合要求的物品。</p>
+<ul>
+<li>用户已经产生过行为物品</li>
+<li>候选物品以外的物品</li>
+<li>某些质量很差的物品</li>
+</ul>
+<h3 id="排名模块">排名模块</h3>
+<ol>
+<li>新颖性排名<br>
+<img src="https://lushunn.github.io/post-images/1576068389198.png" alt=""></li>
+<li>多样性<br>
+第一种提高多样性的方法是将推荐结果按照某种物品的内容属性分成几类，然后在每个类中<br>
+都选择该类中排名最高的物品组合成最终的推荐列表。第二种提高推荐结果多样性的方法是控制不同推荐结果的推荐理由出现的次数。</li>
+<li>时间多样性<br>
+时间多样性主要是为了保证用户不要每天来推荐系统都看到同样的推荐结果。</li>
+</ol>
+<ul>
+<li>记录用户每次登陆推荐系统看到的推荐结果。</li>
+<li>将这些结果发回日志系统。这种数据不需要实时存储，只要能保证小于一天的延时就足<br>
+够了。</li>
+<li>在用户登录时拿到用户昨天及之前看过的推荐结果列表，从当前推荐结果中将用户已经<br>
+看到的推荐结果降权。</li>
+</ul>
+<ol start="4">
+<li>用户反馈<br>
+排名模块最重要的部分就是用户反馈模块。用户反馈模块主要通过分析用户之前和推荐结果<br>
+的交互日志，预测用户会对什么样的推荐结果比较感兴趣。<br>
+如果推荐系统的目标是提高用户对推荐结果的点击率，那么可以利用点击模型（click model）<br>
+预测用户是否会点击推荐结果。点击率预测中可以用如下特征预测用户u会不会点击物品i：</li>
+</ol>
+<ul>
+<li>用户u相关的特征，比如年龄、性别、活跃程度、之前有没有点击行为；</li>
+<li>物品i相关的特征，比如流行度，平均分，内容属性；</li>
+<li>物品i在推荐列表中的位置。用户的点击和用户界面的设计有很高的相关性，因此物品i在<br>
+推荐列表中的位置对预测用户是否点击很重要；</li>
+<li>用户之前是否点击过和推荐物品i具有同样推荐解释的其他推荐结果；</li>
+<li>用户之前是否点击过和推荐物品i来自同样推荐引擎的其他推荐结果。</li>
+</ul>
+<h1 id="评分预测问题">评分预测问题</h1>
+<h2 id="评分预测算法">评分预测算法</h2>
+<h3 id="平均值">平均值</h3>
+<p>最简单的评分预测算法是利用平均值预测用户对物品的评分的。</p>
+<h4 id="用户分类对物品分类的平均值">用户分类对物品分类的平均值</h4>
+<figure data-type="image" tabindex="2"><img src="https://lushunn.github.io/post-images/1576069195460.png" alt=""></figure>
+<h4 id="基于邻域的方法">基于邻域的方法</h4>
+<p><img src="https://lushunn.github.io/post-images/1576069380433.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1576069415145.png" alt=""></p>
+<h4 id="隐语义模型与矩阵分解模型">隐语义模型与矩阵分解模型</h4>
+<p>用户的评分行为可以表示成一个评分矩阵R，其中R[u][i]就是用户u对物品i的评分。但是，用户不会对所有的物品评分，所以这个矩阵里有很多元素都是空的，评分预测从某种意义上说就是填空。<br>
+1.传统的SVD分解<br>
+给定m个用户和n个物品，和用户对物品<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>∈</mo><msup><mi mathvariant="normal">R</mi><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">R\inℝ^{m \times n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.771331em;vertical-align:0em;"></span><span class="mord"><span class="mord amsrm">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.771331em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight">n</span></span></span></span></span></span></span></span></span></span></span></span>。首先需要对评分矩阵中的缺失值进行简单地补全，比如用全局平均值，或者用户/物品平均值补全，得到补全后的矩阵R'。接着，可以用SVD分解将R'分解成如下形式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>R</mi><mo mathvariant="normal">′</mo></msup><mo>=</mo><msup><mi>U</mi><mi>T</mi></msup><mi>S</mi><mi>V</mi></mrow><annotation encoding="application/x-tex">R&#x27;=U^TSV
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.801892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8913309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span></span></span></span></span></p>
+<p>其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>U</mi><mo>∈</mo><msup><mi mathvariant="normal">R</mi><mrow><mi>k</mi><mo>×</mo><mi>m</mi></mrow></msup></mrow><annotation encoding="application/x-tex">U \inℝ^{k \times m}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8491079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord amsrm">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight">m</span></span></span></span></span></span></span></span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>V</mi><mo>∈</mo><msup><mi mathvariant="normal">R</mi><mrow><mi>k</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">V \inℝ^{k \times n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8491079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord amsrm">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight">n</span></span></span></span></span></span></span></span></span></span></span></span>是两个正交矩阵，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi><mo>∈</mo><msup><mi mathvariant="normal">R</mi><mrow><mi>k</mi><mo>×</mo><mi>k</mi></mrow></msup></mrow><annotation encoding="application/x-tex">S \inℝ^{k \times k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8491079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord amsrm">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span></span></span></span>是对角阵，对角线上的每一个元素都是矩阵的奇异值。为了对R'进行降维，可以取最大的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>个奇异值组成对角矩阵<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mi>f</mi></msub></mrow><annotation encoding="application/x-tex">S_f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>，并且找到这<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>个奇异值中每个值在U、V矩阵中对应的行和列，得到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>U</mi><mi>f</mi></msub></mrow><annotation encoding="application/x-tex">U_f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>V</mi><mi>f</mi></msub></mrow><annotation encoding="application/x-tex">V_f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>，从而可以得到一个降维后的评分矩阵：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>R</mi><mi>f</mi><mo mathvariant="normal">′</mo></msubsup><mo>=</mo><msubsup><mi>U</mi><mi>f</mi><mi>T</mi></msubsup><msub><mi>S</mi><mi>f</mi></msub><msub><mi>V</mi><mi>f</mi></msub></mrow><annotation encoding="application/x-tex">R_f&#x27;=U_f^TS_fV_f
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.185em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-2.4530000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.274439em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.891331em;"><span style="top:-2.4530000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>其中， <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>R</mi><mi>f</mi><mo mathvariant="normal">′</mo></msubsup><mo>(</mo><mi>u</mi><mo separator="true">,</mo><mi>i</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">R_f&#x27;(u,i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1711079999999998em;vertical-align:-0.4192159999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-2.4168920000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4192159999999999em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mclose">)</span></span></span></span> 就是用户u对物品i评分的预测值。<br>
+缺点：</p>
+<ul>
+<li>补全后变稠密矩阵，消耗内存空间。</li>
+<li>计算复杂度很高</li>
+</ul>
+<ol start="2">
+<li>Simon Funk的SVD分解<br>
+<img src="https://lushunn.github.io/post-images/1576072524954.png" alt=""></li>
+<li>加入偏置项后的LFM<br>
+<img src="https://lushunn.github.io/post-images/1576072609974.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1576072614699.png" alt=""></li>
+<li>考虑邻域影响的LFM<br>
+前面的LFM模型中并没有显式地考虑用户的历史行为对用户评分预测的影响，提出SVD++。<br>
+<img src="https://lushunn.github.io/post-images/1576072706266.png" alt=""></li>
+</ol>
+<h4 id="加入时间信息">加入时间信息</h4>
+<ol>
+<li>基于邻域的模型融合时间信息<br>
+<img src="https://lushunn.github.io/post-images/1576072781297.png" alt=""></li>
+<li>基于矩阵分解的模型融合时间信息<br>
+在引入时间信息后，用户评分矩阵不再是一个二维矩阵，而是变成了一个三维矩阵。我们可以仿照分解二维矩阵的方式对三维矩阵进行分解。<br>
+<img src="https://lushunn.github.io/post-images/1576072903806.png" alt=""></li>
+</ol>
+<h4 id="模型融合">模型融合</h4>
+<ol>
+<li>模型级联融合</li>
+<li>模型加权融合</li>
+</ol>
 
             </div>
             
