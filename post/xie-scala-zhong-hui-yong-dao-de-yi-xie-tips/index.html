@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | hi~</title>
+<title>写Scala中会用到的一些tips | hi~</title>
 <meta name="description" content="凡有所相，皆为虚妄
 ">
 
@@ -118,24 +118,55 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-01-25</div>
+            <h2 class="post-title">写Scala中会用到的一些tips</h2>
+            <div class="post-date">2020-03-09</div>
             
             <div class="post-content">
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>None</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<p>None</p>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>彩虹6号欢迎开黑~</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>None</p>
+              <p>记录工作中会常用到的一些实用例子</p>
+<ol>
+<li>尼基系数<br>
+科学计算方面scala包的丰富性还是略差于python，出于业务需要，需要编写一个计算基尼指数的函数，<br>
+<a href="https://www.cnblogs.com/OliverQin/p/8649605.html">here</a>  已经给出了计算方法和应用案例，根据计算过程稍加修改即可：</li>
+</ol>
+<pre><code class="language-scala"> def gini( nums :ArrayBuffer[Int]): Double={
+
+ def scanLeft[a,b](xs:Iterable[a])(s:b)(f : (b,a) =&gt; b) =
+   xs.foldLeft(List(s))( (acc,x) =&gt; f(acc(0), x) :: acc).reverse //累加函数
+ 
+ val nums_1=nums.sorted
+ val y_cumsum=scanLeft(nums_1)(0)(_+_)
+ val y_sum=nums.sum
+ val y_per_cumsum=y_cumsum.map(x=&gt;x.toDouble/y_sum)
+ 
+ val x = List.fill(nums.length)(1.0)
+ val x_sum=x.sumstako
+ val x_cumsum=scanLeft(x)(0.0)(_+_)
+ val x_per_cumsum=x_cumsum.map(x=&gt;x/x_sum)
+ val pairs = x_per_cumsum zip y_per_cumsum
+ var B=0.0
+ val l=pairs.length
+ for (i &lt;- 1 until l) {
+   B+=(pairs(i)._2+pairs(i-1)._2)*(pairs(i)._1-pairs(i-1)._1)*0.5
+ }
+ val A = 0.5 - B
+ A / (A + B)
+}
+</code></pre>
+<ul>
+<li>刚开始使用scala，说实话自认写的挺烂，风格不够scala有优化空间，scanLeft我也是抄自<a href="https://stackoverflow.com/questions/3224935/in-scala-how-do-i-fold-a-list-and-return-the-intermediate-results">stackoverflow</a>,说实话没太看懂，希望之后会更进步。</li>
+</ul>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://lushunn.github.io/post/lesslesstui-jian-xi-tong-shi-jian-greatergreater-du-shu-bi-ji-di-7-8-zhang-sa-hua-wan-jie">
+                  <h3 class="post-title">
+                    《推荐系统实践》 读书笔记 第7-8章（撒花完结）
+                  </h3>
+                </a>
+              </div>
             
 
             
