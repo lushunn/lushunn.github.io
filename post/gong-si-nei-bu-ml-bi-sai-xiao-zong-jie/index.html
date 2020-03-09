@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>公司内部ML比赛小总结 | hi~</title>
+<meta name="description" content="凡有所相，皆为虚妄
+">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1583772992531">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154126670-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-154126670-1');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://lushunn.github.io">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1583772992531" class="site-logo">
+        <h1 class="site-title">hi~</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      凡有所相，皆为虚妄
+
+    </div>
+    <div class="site-footer">
+      Github <a href="https://github.com/lushunn" target="_blank">lushun</a>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154126670-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-154126670-1');
+</script> | <a class="rss" href="https://lushunn.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">公司内部ML比赛小总结</h2>
+            <div class="post-date">2020-03-09</div>
+            
+            <div class="post-content">
+              <p>之前零零散散做过一些数据挖掘比赛，由于个人水平原因和偷懒，要么没坚持下来，要么与得奖失之交臂，也就得过一次小小安慰奖，今天痛改前非，小小记录一下公司内部数据挖掘比赛，算是复盘？</p>
+<h2 id="0-说明">0. 说明</h2>
+<p>本比赛算是初赛，750人参加，排除掉抄袭后最后名次50+。从开始建模提交次数不算多，中间经过了几次tricks导致分数暴涨，涨到前3后就失去了动力，陷入泥淖。过年疫情那段时间被人疯狂赶上。</p>
+<h2 id="1-探索性数据分析">1. 探索性数据分析</h2>
+<p>比赛赛题是“基于用户行为特征分析的骚扰欺诈电话识别”，任务是多分类，评价指标是F1。<br>
+数据标签进行了加密，通过hd5解密可以得到真实label。</p>
+<pre><code class="language-python">decode={'7C26FADD409BD4B9':'normal','C7E2941B65C6CCD6':'driver','816A9BEBED2D7C99':'Harassment','0F2E4CC10EDBE80F':'Fraud','56AFA2A526F96CC9'
+       :'delivery' }
+</code></pre>
+<p>所用可视化的方法来自<a href="https://github.com/shenxiangzhuang/Bank-Competition">here</a>作者，原本是二分类的label和features的交叉分析，被我蹩脚的胡改变成多分类，可视化函数如下：</p>
+<pre><code class="language-python">import seaborn as sns
+import matplotlib.pyplot as plt
+#离散特征
+def catPlot_5(data,feature, figsize=(14, 6), save=False, filename=None):#是否正常绘图
+    df=data.copy(deep=True)
+    total=len(df)
+    feature_name = feature.capitalize()
+    tmp = pd.crosstab(df[feature], df['label'], normalize='index') * 100
+    tmp = tmp.reset_index()
+
+    plt.figure(figsize=figsize)
+    plt.suptitle(f'{feature_name} Distributions', fontsize=22)
+
+    plt.subplot(121)
+    g = sns.countplot(x=feature, data=df)
+    # plt.legend(title='Fraud', loc='upper center', labels=['No', 'Yes'])
+
+    g.set_title(f&quot;{feature_name} Distribution&quot;, fontsize=19)
+    g.set_xlabel(feature_name, fontsize=17)
+    g.set_ylabel(&quot;Count&quot;, fontsize=17)
+    for p in g.patches:
+        height = p.get_height()
+        g.text(p.get_x()+p.get_width()/2.,
+                height + 3,
+                '{:1.2f}%'.format(height/total*100),
+                ha=&quot;center&quot;, fontsize=14) 
+
+    plt.subplot(122)
+    g1 = sns.countplot(x=feature, hue='label', data=df)
+    #plt.legend(title='label', loc='best', labels=['No', 'Yes'])
+    gt = g1.twinx()
+    gt = sns.pointplot(x=feature, y='normal', data=tmp, 
+                       color='blue', scale=0.5,
+                       legend=False)
+    gt = sns.pointplot(x=feature, y='driver', data=tmp, 
+                       color='purple', scale=0.5,
+                       legend=False)
+    gt = sns.pointplot(x=feature, y='delivery', data=tmp, 
+                       color='green', scale=0.5,
+                       legend=False)
+    gt = sns.pointplot(x=feature, y='Harassment', data=tmp, 
+                       color='orange', scale=0.5,
+                       legend=False)
+    gt = sns.pointplot(x=feature, y='Fraud', data=tmp, 
+                       color='red', scale=0.5,
+                       legend=False)
+    #gt.set_ylabel(&quot;% of Fraud Transactions&quot;, fontsize=16)
+
+    #g1.set_title(f&quot;{feature_name} by Target(isFraud)&quot;, fontsize=19)
+    g1.set_xlabel(feature_name, fontsize=17)
+    g1.set_ylabel(&quot;Count&quot;, fontsize=17)
+    plt.subplots_adjust(hspace = 0.6, top = 0.85)
+    if save:
+        if filename:
+            plt.savefig(f'../pics/{filename}.png', bbox_inches='tight', dpi=300)
+        else:
+            plt.savefig(f'../pics/{feature_name}.png', bbox_inches='tight', dpi=300)
+    plt.show()
+
+#连续特征
+def distPlot(data,feature, save=False, filename=None):
+    df=data.dropna()
+    #df['label']=df['label'].map(lambda x : 1 if x&gt;=3 else 0)
+    feature_name = feature.capitalize()
+    g = sns.distplot(df[df['label'] == 'normal'][feature], label='normal')
+    g = sns.distplot(df[df['label'] == 'driver'][feature], label='driver')
+    g = sns.distplot(df[df['label'] == 'delivery'][feature], label='delivery')
+    g = sns.distplot(df[df['label'] == 'Harassment'][feature], label='Harassment')
+    g = sns.distplot(df[df['label'] == 'Fraud'][feature], label='Fraud')
+    g.legend()
+    g.set_title(f&quot;{feature_name} Distribution by Target&quot;, fontsize=20)
+    g.set_xlabel(feature_name, fontsize=18)
+    g.set_ylabel(&quot;Probability&quot;, fontsize=18)
+    if save:
+        if filename:
+            plt.savefig(f'../pics/{filename}.png', bbox_inches='tight', dpi=300)
+        else:
+            plt.savefig(f'../pics/{feature_name}.png', bbox_inches='tight', dpi=300)
+    plt.show()
+</code></pre>
+<p>可视化效果如下<br>
+<img src="https://lushunn.github.io/post-images/1583769731867.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1583769758058.png" alt=""></p>
+<h2 id="3-建模思路">3. 建模思路</h2>
+<p>经过和同事讨论和排名靠全的同事分享，提高得分的诀窍在于train数据和test数据存在分布差别过大，以及数据不均衡的现象。总结来说tricks有三点，stacking增强模型泛化能力，重采样以及调整损失函数。很遗憾其实我只做到了第二点，简单的将label分布最少的样本翻了一倍；模型集成方面用的相较于stacking更简单的10fold交叉验证，每9折数据建立模型预测pred_prob取平均。</p>
+<p>1）特征工程</p>
+<p>将缺失值统一插补-9999，取值较少的离散变量，如credit_level，gender，做one-hot处理；用户出生日期这个特征上，将取值个数少于10个的一些取值中，找出一些异常取值（如1911）进行特别标注，产品实例开通日期中，异常取值（如大于20190930）特别标注，CUST_ACCESS_NET_DT客户入网时间，只取到年月日，抛弃小时分钟信息，在网产品个数大于250个统一截断为250。生成特征category_visit，汇总应用启动次数大于0的应用之总启动个数。同时删除特征membership_level会员级别和app1_visits（app1的启动次数），特别是去除后者，对预测得分提升极大，其实算是凑巧发现，我猜可能是在这个特征上train和test差别过大，但在train训练的模型中，此特征的特征重要性却远远甩开同类其他app启动特征的缘故。有些id类特征，如终端厂商，手机终端型号，终端厂商会出现id取值过多，且测试集出现不存在于训练集的id取值这种难搞的现象，这类特征我一直都没有找到好的处理方式，用label做woe编码或者做labelcount编码好像都会透露label信息导致预测精度下降；本次处理方法是先将出现频率小于阈值的取值做统一特殊编码，再做count编码，也就是用特征出现的频数来代替原本取值，最后效果还算不错。其实我感觉这类id特征，一般基于业务去提取主要的信息是最好的，工作量当然也会成倍增加。</p>
+<p>总得来说，我还是太不了解移动运营商产品的业务知识了，也找不到人去问，所以生成交叉这方面，还是做的挺贫乏的，</p>
+<p>2）建模<br>
+没啥好说的，lgb干就完了，10折模型去集成，偷懒代替stacking。</p>
+<p>3）样本不均衡<br>
+除了把样本量最小的样本数翻了一倍之外，对于多分类预测也采用了阈值调整的方法，效果是非常不错的。</p>
+<h2 id="4-总结">4. 总结</h2>
+<p>之前总以为比赛只要作好特征工程加调参集成就行，其实并不是，还有更基础的数据层面，在这个坑上面我被折腾了很久，比如训练集和测试集分布过大时要怎么处理，要不要针对数据均衡采取处理，还有一些致命的噪声特征（比如取值全部一样，多个特征高强度相关，train和test分布差别过大），有时候很容易忽视，却是一个降低预测精准度的坑。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://lushunn.github.io/post/xie-scala-zhong-hui-yong-dao-de-yi-xie-tips">
+                  <h3 class="post-title">
+                    写Scala中会用到的一些tips
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '3a52f974af9281a9e5db',
+        clientSecret: 'a277c665ff999c49c800699f4e0782e75f646fad',
+        repo: 'lushunn.github.io',
+        owner: 'lushunn',
+        admin: ['lushunn'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
