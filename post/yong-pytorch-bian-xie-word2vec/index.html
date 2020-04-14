@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>用PyTorch编写word2vec | hi~</title>
+<meta name="description" content="凡有所相，皆为虚妄
+">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1586854069036">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154126670-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-154126670-1');
+</script>
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://lushunn.github.io">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1586854069036" class="site-logo">
+        <h1 class="site-title">hi~</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      凡有所相，皆为虚妄
+
+    </div>
+    <div class="site-footer">
+      Github <a href="https://github.com/lushunn" target="_blank">lushun</a>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154126670-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-154126670-1');
+</script> | <a class="rss" href="https://lushunn.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">用PyTorch编写word2vec</h2>
+            <div class="post-date">2020-04-14</div>
+            
+            <div class="post-content">
+              <p>参考资料 <a href="https://towardsdatascience.com/implementing-word2vec-in-pytorch-skip-gram-model-e6bae040d2fb/" title="Implementing word2vec in PyTorch (skip-gram model)">Implementing word2vec in PyTorch (skip-gram model)</a>.</p>
+<h1 id="skip-gram-model">skip-gram model</h1>
+<h2 id="1准备工作">1.准备工作</h2>
+<p>假设我们有一下语料库：</p>
+<pre><code class="language-python">corpus = [
+    'he is a king',
+    'she is a queen',
+    'he is a man',
+    'she is a woman',
+    'warsaw is poland capital',
+    'berlin is germany capital',
+    'paris is france capital',
+]
+</code></pre>
+<h2 id="2创建词汇表">2.创建词汇表</h2>
+<p>对每条句子进行分词处理</p>
+<pre><code class="language-python">def tokenize_corpus(corpus):
+   tokens = [x.split() for x in corpus]
+   return tokens
+
+tokenized_corpus = tokenize_corpus(corpus)
+</code></pre>
+<p>得到结果为</p>
+<blockquote>
+<p>[['he', 'is', 'a', 'king'],<br>
+['she', 'is', 'a', 'queen'],<br>
+['he', 'is', 'a', 'man'],<br>
+['she', 'is', 'a', 'woman'],<br>
+['warsaw', 'is', 'poland', 'capital'],<br>
+['berlin', 'is', 'germany', 'capital'],<br>
+['paris', 'is', 'france', 'capital']]</p>
+</blockquote>
+<p>然后对单词进行编号：</p>
+<pre><code class="language-python">vocabulary = []
+for sentence in tokenized_corpus:
+   for token in sentence:
+       if token not in vocabulary:
+           vocabulary.append(token)
+
+word2idx = {w: idx for (idx, w) in enumerate(vocabulary)}
+idx2word = {idx: w for (idx, w) in enumerate(vocabulary)}
+
+vocabulary_size = len(vocabulary)
+</code></pre>
+<p>得到结果</p>
+<blockquote>
+<p>0: 'he',<br>
+1: 'is',<br>
+2: 'a',<br>
+3: 'king',<br>
+4: 'she',<br>
+5: 'queen',<br>
+6: 'man',<br>
+7: 'woman',<br>
+8: 'warsaw',<br>
+9: 'poland',<br>
+10: 'capital',<br>
+11: 'berlin',<br>
+12: 'germany',<br>
+13: 'paris',<br>
+14: 'france'</p>
+</blockquote>
+<p>然后可以产生中心词(center word), 上下文词(context word)对，假设窗口为2</p>
+<pre><code class="language-python">window_size = 2
+idx_pairs = []
+# for each sentence
+for sentence in tokenized_corpus:
+    indices = [word2idx[word] for word in sentence]
+    # for each word, threated as center word
+    for center_word_pos in range(len(indices)):
+        # for each window position
+        for w in range(-window_size, window_size + 1):
+            context_word_pos = center_word_pos + w
+            # make soure not jump out sentence
+            if context_word_pos &lt; 0 or context_word_pos &gt;= len(indices) or center_word_pos == context_word_pos:
+                continue
+            context_word_idx = indices[context_word_pos]
+            idx_pairs.append((indices[center_word_pos], context_word_idx))
+
+idx_pairs = np.array(idx_pairs) # it will be useful to have this as numpy array
+</code></pre>
+<p>得到的结果是</p>
+<blockquote>
+<p>array([[ 0,  1],<br>
+[ 0,  2],<br>
+...</p>
+</blockquote>
+<p>翻译为:</p>
+<blockquote>
+<p>he is<br>
+he a<br>
+is he<br>
+is a<br>
+is king<br>
+a he<br>
+a is<br>
+a king</p>
+</blockquote>
+<p>用图片展示更佳<br>
+<img src="https://lushunn.github.io/post-images/1586852413944.png" alt=""></p>
+<h1 id="3定义目标函数">3.定义目标函数</h1>
+<p>对于 skip-gram来说，我们感兴趣的概率应该是已知中心词和参数下，上下文词的出现概率，对每一个词对，有<br>
+<img src="https://lushunn.github.io/post-images/1586852557983.png" alt=""><br>
+我们的模型，应该能使所有词对的以下概率出现最大化：<br>
+<img src="https://lushunn.github.io/post-images/1586852637182.png" alt=""><br>
+为了为方便求导，对目标函数log处理，并求目标函数最小化：<br>
+<img src="https://lushunn.github.io/post-images/1586852719522.png" alt=""><br>
+由于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo>(</mo><mi>a</mi><mo separator="true">⋅</mo><mi>b</mi><mo>)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>a</mi><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">log(a·b)=loga+logb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">b</span></span></span></span>,最后的损失函数为：<br>
+<img src="https://lushunn.github.io/post-images/1586852879223.png" alt=""></p>
+<p>接下来只剩下定义概率P(context|center)，可以有<br>
+<img src="https://lushunn.github.io/post-images/1586852977281.png" alt=""><br>
+注意其形式类似于softmax函数。</p>
+<h1 id="4coding">4.coding</h1>
+<h2 id="input-layer">Input layer</h2>
+<p>input layer的作用仅仅是进行one-hot编码</p>
+<pre><code class="language-python">def get_input_layer(word_idx):
+    x = torch.zeros(vocabulary_size).float()
+    x[word_idx] = 1.0
+    return x
+</code></pre>
+<h2 id="hidden-layer">Hidden layer</h2>
+<p>隐藏层实质是输入变量和权重的矩阵乘法</p>
+<pre><code class="language-python">embedding_dims = 5
+W1 = Variable(torch.randn(embedding_dims, vocabulary_size).float(), requires_grad=True)
+z1 = torch.matmul(W1, x)
+</code></pre>
+<p>W1的每一列都代表着储存着一个单词的词向量。</p>
+<h2 id="output-layer">Output layer</h2>
+<pre><code class="language-python">W2 = Variable(torch.randn(vocabulary_size, embedding_dims).float(), requires_grad=True)
+z2 = torch.matmul(W2, z1)
+</code></pre>
+<p>最后一层隐藏层有vocabulary_size个神经元，代表着每个单词的出现概率。<br>
+输出层：</p>
+<pre><code class="language-python">log_softmax = F.log_softmax(a2, dim=0)
+</code></pre>
+<p>等同于取log后进行softmax的计算效果<br>
+最后计算损失函数</p>
+<pre><code class="language-python">loss = F.nll_loss(log_softmax.view(1,-1), y_true)
+</code></pre>
+<p>整体代码如下</p>
+<pre><code class="language-python">embedding_dims = 5
+W1 = Variable(torch.randn(embedding_dims, vocabulary_size).float(), requires_grad=True)
+W2 = Variable(torch.randn(vocabulary_size, embedding_dims).float(), requires_grad=True)
+num_epochs = 100
+learning_rate = 0.001
+
+for epo in range(num_epochs):
+    loss_val = 0
+    for data, target in idx_pairs:
+        x = Variable(get_input_layer(data)).float()
+        y_true = Variable(torch.from_numpy(np.array([target])).long())
+
+        z1 = torch.matmul(W1, x)
+        z2 = torch.matmul(W2, z1)
+    
+        log_softmax = F.log_softmax(z2, dim=0)
+
+        loss = F.nll_loss(log_softmax.view(1,-1), y_true)
+        loss_val += loss.data[0]
+        loss.backward()
+        W1.data -= learning_rate * W1.grad.data
+        W2.data -= learning_rate * W2.grad.data
+
+        W1.grad.data.zero_() #降梯度归0
+        W2.grad.data.zero_()#降梯度归0
+    if epo % 10 == 0:    
+        print(f'Loss at epo {epo}: {loss_val/len(idx_pairs)}')
+</code></pre>
+<p>当然在训练word2vec的过程中还有很多工程技巧，比如用negative sampling或Hierarchical Softmax减少词汇空间过大带来的计算量，对高频词汇进行降采样避免对于这些低信息词汇的无谓计算等。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://lushunn.github.io/post/gong-si-nei-bu-ml-bi-sai-xiao-zong-jie">
+                  <h3 class="post-title">
+                    公司内部ML比赛小总结
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '3a52f974af9281a9e5db',
+        clientSecret: 'a277c665ff999c49c800699f4e0782e75f646fad',
+        repo: 'lushunn.github.io',
+        owner: 'lushunn',
+        admin: ['lushunn'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

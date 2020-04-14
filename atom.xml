@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lushunn.github.io</id>
     <title>hi~</title>
-    <updated>2020-03-09T16:56:35.929Z</updated>
+    <updated>2020-04-14T08:47:51.818Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lushunn.github.io"/>
     <link rel="self" href="https://lushunn.github.io/atom.xml"/>
@@ -11,6 +11,183 @@
     <logo>https://lushunn.github.io/images/avatar.png</logo>
     <icon>https://lushunn.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, hi~</rights>
+    <entry>
+        <title type="html"><![CDATA[用PyTorch编写word2vec]]></title>
+        <id>https://lushunn.github.io/post/yong-pytorch-bian-xie-word2vec</id>
+        <link href="https://lushunn.github.io/post/yong-pytorch-bian-xie-word2vec">
+        </link>
+        <updated>2020-04-14T07:59:58.000Z</updated>
+        <content type="html"><![CDATA[<p>参考资料 <a href="https://towardsdatascience.com/implementing-word2vec-in-pytorch-skip-gram-model-e6bae040d2fb/" title="Implementing word2vec in PyTorch (skip-gram model)">Implementing word2vec in PyTorch (skip-gram model)</a>.</p>
+<h1 id="skip-gram-model">skip-gram model</h1>
+<h2 id="1准备工作">1.准备工作</h2>
+<p>假设我们有一下语料库：</p>
+<pre><code class="language-python">corpus = [
+    'he is a king',
+    'she is a queen',
+    'he is a man',
+    'she is a woman',
+    'warsaw is poland capital',
+    'berlin is germany capital',
+    'paris is france capital',
+]
+</code></pre>
+<h2 id="2创建词汇表">2.创建词汇表</h2>
+<p>对每条句子进行分词处理</p>
+<pre><code class="language-python">def tokenize_corpus(corpus):
+   tokens = [x.split() for x in corpus]
+   return tokens
+
+tokenized_corpus = tokenize_corpus(corpus)
+</code></pre>
+<p>得到结果为</p>
+<blockquote>
+<p>[['he', 'is', 'a', 'king'],<br>
+['she', 'is', 'a', 'queen'],<br>
+['he', 'is', 'a', 'man'],<br>
+['she', 'is', 'a', 'woman'],<br>
+['warsaw', 'is', 'poland', 'capital'],<br>
+['berlin', 'is', 'germany', 'capital'],<br>
+['paris', 'is', 'france', 'capital']]</p>
+</blockquote>
+<p>然后对单词进行编号：</p>
+<pre><code class="language-python">vocabulary = []
+for sentence in tokenized_corpus:
+   for token in sentence:
+       if token not in vocabulary:
+           vocabulary.append(token)
+
+word2idx = {w: idx for (idx, w) in enumerate(vocabulary)}
+idx2word = {idx: w for (idx, w) in enumerate(vocabulary)}
+
+vocabulary_size = len(vocabulary)
+</code></pre>
+<p>得到结果</p>
+<blockquote>
+<p>0: 'he',<br>
+1: 'is',<br>
+2: 'a',<br>
+3: 'king',<br>
+4: 'she',<br>
+5: 'queen',<br>
+6: 'man',<br>
+7: 'woman',<br>
+8: 'warsaw',<br>
+9: 'poland',<br>
+10: 'capital',<br>
+11: 'berlin',<br>
+12: 'germany',<br>
+13: 'paris',<br>
+14: 'france'</p>
+</blockquote>
+<p>然后可以产生中心词(center word), 上下文词(context word)对，假设窗口为2</p>
+<pre><code class="language-python">window_size = 2
+idx_pairs = []
+# for each sentence
+for sentence in tokenized_corpus:
+    indices = [word2idx[word] for word in sentence]
+    # for each word, threated as center word
+    for center_word_pos in range(len(indices)):
+        # for each window position
+        for w in range(-window_size, window_size + 1):
+            context_word_pos = center_word_pos + w
+            # make soure not jump out sentence
+            if context_word_pos &lt; 0 or context_word_pos &gt;= len(indices) or center_word_pos == context_word_pos:
+                continue
+            context_word_idx = indices[context_word_pos]
+            idx_pairs.append((indices[center_word_pos], context_word_idx))
+
+idx_pairs = np.array(idx_pairs) # it will be useful to have this as numpy array
+</code></pre>
+<p>得到的结果是</p>
+<blockquote>
+<p>array([[ 0,  1],<br>
+[ 0,  2],<br>
+...</p>
+</blockquote>
+<p>翻译为:</p>
+<blockquote>
+<p>he is<br>
+he a<br>
+is he<br>
+is a<br>
+is king<br>
+a he<br>
+a is<br>
+a king</p>
+</blockquote>
+<p>用图片展示更佳<br>
+<img src="https://lushunn.github.io/post-images/1586852413944.png" alt=""></p>
+<h1 id="3定义目标函数">3.定义目标函数</h1>
+<p>对于 skip-gram来说，我们感兴趣的概率应该是已知中心词和参数下，上下文词的出现概率，对每一个词对，有<br>
+<img src="https://lushunn.github.io/post-images/1586852557983.png" alt=""><br>
+我们的模型，应该能使所有词对的以下概率出现最大化：<br>
+<img src="https://lushunn.github.io/post-images/1586852637182.png" alt=""><br>
+为了为方便求导，对目标函数log处理，并求目标函数最小化：<br>
+<img src="https://lushunn.github.io/post-images/1586852719522.png" alt=""><br>
+由于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo>(</mo><mi>a</mi><mo separator="true">⋅</mo><mi>b</mi><mo>)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>a</mi><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">log(a·b)=loga+logb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">b</span></span></span></span>,最后的损失函数为：<br>
+<img src="https://lushunn.github.io/post-images/1586852879223.png" alt=""></p>
+<p>接下来只剩下定义概率P(context|center)，可以有<br>
+<img src="https://lushunn.github.io/post-images/1586852977281.png" alt=""><br>
+注意其形式类似于softmax函数。</p>
+<h1 id="4coding">4.coding</h1>
+<h2 id="input-layer">Input layer</h2>
+<p>input layer的作用仅仅是进行one-hot编码</p>
+<pre><code class="language-python">def get_input_layer(word_idx):
+    x = torch.zeros(vocabulary_size).float()
+    x[word_idx] = 1.0
+    return x
+</code></pre>
+<h2 id="hidden-layer">Hidden layer</h2>
+<p>隐藏层实质是输入变量和权重的矩阵乘法</p>
+<pre><code class="language-python">embedding_dims = 5
+W1 = Variable(torch.randn(embedding_dims, vocabulary_size).float(), requires_grad=True)
+z1 = torch.matmul(W1, x)
+</code></pre>
+<p>W1的每一列都代表着储存着一个单词的词向量。</p>
+<h2 id="output-layer">Output layer</h2>
+<pre><code class="language-python">W2 = Variable(torch.randn(vocabulary_size, embedding_dims).float(), requires_grad=True)
+z2 = torch.matmul(W2, z1)
+</code></pre>
+<p>最后一层隐藏层有vocabulary_size个神经元，代表着每个单词的出现概率。<br>
+输出层：</p>
+<pre><code class="language-python">log_softmax = F.log_softmax(a2, dim=0)
+</code></pre>
+<p>等同于取log后进行softmax的计算效果<br>
+最后计算损失函数</p>
+<pre><code class="language-python">loss = F.nll_loss(log_softmax.view(1,-1), y_true)
+</code></pre>
+<p>整体代码如下</p>
+<pre><code class="language-python">embedding_dims = 5
+W1 = Variable(torch.randn(embedding_dims, vocabulary_size).float(), requires_grad=True)
+W2 = Variable(torch.randn(vocabulary_size, embedding_dims).float(), requires_grad=True)
+num_epochs = 100
+learning_rate = 0.001
+
+for epo in range(num_epochs):
+    loss_val = 0
+    for data, target in idx_pairs:
+        x = Variable(get_input_layer(data)).float()
+        y_true = Variable(torch.from_numpy(np.array([target])).long())
+
+        z1 = torch.matmul(W1, x)
+        z2 = torch.matmul(W2, z1)
+    
+        log_softmax = F.log_softmax(z2, dim=0)
+
+        loss = F.nll_loss(log_softmax.view(1,-1), y_true)
+        loss_val += loss.data[0]
+        loss.backward()
+        W1.data -= learning_rate * W1.grad.data
+        W2.data -= learning_rate * W2.grad.data
+
+        W1.grad.data.zero_() #降梯度归0
+        W2.grad.data.zero_()#降梯度归0
+    if epo % 10 == 0:    
+        print(f'Loss at epo {epo}: {loss_val/len(idx_pairs)}')
+</code></pre>
+<p>当然在训练word2vec的过程中还有很多工程技巧，比如用negative sampling或Hierarchical Softmax减少词汇空间过大带来的计算量，对高频词汇进行降采样避免对于这些低信息词汇的无谓计算等。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[公司内部ML比赛小总结]]></title>
         <id>https://lushunn.github.io/post/gong-si-nei-bu-ml-bi-sai-xiao-zong-jie</id>
@@ -1149,38 +1326,6 @@ Smoothness Assumption的大概内容介绍如下图，简单的说就是如果x�
 <img src="https://lushunn.github.io/post-images/1569664172988.png" alt=""><br>
 t-SNE算法的核心在于相似度计算上的创新，在原来的样本点空间上面，计算相似度是计算<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">x^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.824664em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span></span></span></span></span></span></span>,<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mi>j</mi></msup></mrow><annotation encoding="application/x-tex">x^j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.824664em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span></span></span></span></span></span></span>之间的欧式距离，取一个负号，再取exponent，这种方法比较好，因为它可以确保说只有非常相近的点才有值，只要距离一拉开，similarity就会变得很小。 在t-SNE之前，有一个方法叫做SNE：对于降维以后向量z，它选择测量方式跟原来的样本是一样的。t-SNE神妙的地方在：降维以后的空间中，它选择的测量方式跟原来的样本空间是不一样的，它选择是t distribution变换的其中一种<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><msup><mi>S</mi><msup><mrow></mrow><mo mathvariant="normal">′</mo></msup></msup><mo>(</mo><msup><mi>z</mi><mi>i</mi></msup><mo separator="true">,</mo><msup><mi>z</mi><mi>j</mi></msup><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msup><mi>z</mi><mi>i</mi></msup><mo>−</mo><msup><mi>z</mi><mi>j</mi></msup><mi mathvariant="normal">∣</mi><msub><mi mathvariant="normal">∣</mi><mn>2</mn></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">(S^{&#x27;}(z^i,z^j)=\frac{1}{1+||z^i-z^j||_2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.19248em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.94248em;margin-right:0.05em;"><span class="pstrut" style="height:2.57948em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.365108em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord mtight">∣</span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7570857142857143em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span></span></span></span><span class="mbin mtight">−</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7570857142857144em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span></span></span></span><span class="mord mtight">∣</span><span class="mord mtight"><span class="mord mtight">∣</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>,做完变换过后，原本样本空间中距离相差较大的样本点，在低维度空间中，会被拉得更大。从下图使用t-SNE算法做的降维可视化中就可以看出。</p>
 <figure data-type="image" tabindex="3"><img src="https://lushunn.github.io/post-images/1569664038016.png" alt=""></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[2018年一些新的知识追踪算法不完全整理]]></title>
-        <id>https://lushunn.github.io/post/2019-1-21- 2018年一些新的知识追踪算法</id>
-        <link href="https://lushunn.github.io/post/2019-1-21- 2018年一些新的知识追踪算法">
-        </link>
-        <updated>2019-01-21T07:34:11.000Z</updated>
-        <content type="html"><![CDATA[<p>面临实习转正，需要接触到知识追踪方面的学习（毕竟是自适应学习的第一步），网上资料挺少。GitHub代码极少，相较于发展火热的推荐，违约预测，cv，nlp，教育挖掘模型实在不多，GitHub代码非常少，所以除了传统IRT，BKT，DKT之外，特意看了看比较新的知识追踪paper，期望他们的落地实现。</p>
-<h2 id="1end-to-end-deep-knowledge-tracing-by-learning-binary-question-embedding">1.End-to-End Deep Knowledge Tracing by Learning Binary Question Embedding</h2>
-<p>这篇Paper其实是[ICLR 2018][1]被拒的文章，不过审理由集中在，“卧槽你写个啥，啥也没写明白，虽然思路很优秀，但你这篇幅也太短了吧，图3是个什么”。其实这个paper还是有很多亮点，主要是他的一些思想和我本人的一些幻想不谋而合,即我们通常基于习题标记的知识点label这个粒度作为输入输出，那我们何不干脆一点，直接用question id 这个最小的特征粒度作为输出，通过embedding，传入我们的rnn。</p>
-<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1569310897813.jpg" alt=""></figure>
-<p>当然随之改变的还有损失函数，除了和DKT类似的最后一层 DKT’s objective function :Lp,我们需要以下的损失函数来使得我们的网络来学习embedding 矩阵：Ls和Lr</p>
-<figure data-type="image" tabindex="2"><img src="https://lushunn.github.io/post-images/1569310915509.png" alt=""></figure>
-<figure data-type="image" tabindex="3"><img src="https://lushunn.github.io/post-images/1569310957464.jpg" alt=""></figure>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>δ</mi><mi mathvariant="normal">˜</mi><mo>(</mo><mi>q</mi><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">δ˜(qt+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03785em;">δ</span><span class="mord">˜</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 是在t+1时刻哪些回答了哪些习题的one-hot编码，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>y</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">y_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是预测每个习题回答正确的可能性，; <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>a</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">a_{t+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>是t+1时刻是否回答正确的向量，l是交叉损失熵 。<br>
-对于lr和ls，x't是通过类似于从vt到yt转译，从前一半ut转译而来的重组向量，Lr的作用是让我们的网络学习到，学生做题的表现情况，取决于抽象知识点的掌握程度。而lr则是稀疏正则化，使得预测结果压缩在0-1之间。（很奇怪且复杂的损失函数）。<br>
-最后合成如下：</p>
-<p><img src="https://lushunn.github.io/post-images/1569310968123.png" alt=""><br>
-[1]: https://openreview.net/pdf?id=H1blCtkPf</p>
-<h2 id="2knowledge-tracing-machines-factorization-machines-for-knowledge-tracing">2.Knowledge Tracing Machines: Factorization Machines for Knowledge Tracing</h2>
-<p>这篇paper已被AAAI 2019 收录，运用了类似CTR预估中的FM因子分解机，利用特征之间的组合特性，预测习题是否被正确做出，FM分解机应该大家都不会陌生，其实文章的中心在于如何构造特征。<br>
-User,items,skills,是id类feature的one-hot(skills是向量)，分别是用户id，习题id，习题对应知识点id向量，Wins和Fails变量的设置是核心所在，想要理解需要费一些功夫，简单来说，分别表示做对和做错某题对应知识点的计数器，但仅在该时刻习题知识点与历史做题记录共同的知识点上进行累加，具体可以见<a href="https://medium.com/@jordancoil/knowledge-tracing-machines-factorization-machines-for-knowledge-tracing-a-summary-62e3b4965133">https://medium.com/@jordancoil/knowledge-tracing-machines-factorization-machines-for-knowledge-tracing-a-summary-62e3b4965133</a> 一文的详细讲解，本人太懒，想要表达完全需要费些功夫，带过就好。<br>
-<img src="https://lushunn.github.io/post-images/1569310979584.png" alt=""></p>
-<p>这样一来，知识追踪就从RNN序列模型，简化成了普通的机器学习01分类模型，模型复杂度降低，值得注意的是，既然模型原理已经向CTr预估或者推荐系统靠近，需要强大的实时计算能力才能应付增加的user和item，技术实现难度反而提高，但相应准确性也提高。</p>
-<p>当然，你也可以引入外部特征来优化模型，如学生班级，学校，性别等。同时作者也有一篇paper《Deep Factorization Machines for Knowledge Tracing》提出用Deep FM构建知识追踪模型，所以感觉其他领域模型的不断发展，会促进教育挖掘领域的进步。</p>
-<p>论文链接：<br>
-<a href="https://arxiv.org/pdf/1811.03388.pdf">https://arxiv.org/pdf/1811.03388.pdf</a><br>
-<a href="https://arxiv.org/pdf/1805.00356.pdf">https://arxiv.org/pdf/1805.00356.pdf</a></p>
-<h2 id="3-dynamic-key-value-memory-networks-for-knowledge-tracing">3. Dynamic Key-Value Memory Networks for Knowledge Tracing</h2>
-<p>没怎么认真看，好像是对DKT网络结构的优化，粗看结构图，改变较大。</p>
-<p>论文链接：<a href="https://arxiv.org/abs/1611.08108">https://arxiv.org/abs/1611.08108</a></p>
 ]]></content>
     </entry>
 </feed>
