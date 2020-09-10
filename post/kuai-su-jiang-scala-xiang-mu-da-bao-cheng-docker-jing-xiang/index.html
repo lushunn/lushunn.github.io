@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | hi~</title>
+<title>快速将scala项目打包成Docker镜像 | hi~</title>
 <meta name="description" content="凡有所相，皆为虚妄
 ">
 
@@ -118,24 +118,70 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-01-25</div>
+            <h2 class="post-title">快速将scala项目打包成Docker镜像</h2>
+            <div class="post-date">2020-09-10</div>
             
             <div class="post-content">
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
+              <p>项目中需要将play框架编写的sbt项目容器化打包，编写Dockerfile比较麻烦，很多sbt的镜像缺乏维护。利用sbt-native-packager https://www.scala-sbt.org/sbt-native-packager/formats/docker.html# 可以更加方便的利用sbt插件直接打包镜像。</p>
+<h3 id="如何操作">如何操作</h3>
+<p>根据官网描述，第一步需要把以下命令加在sbt项目的project文件夹下的plugins.sbt中</p>
+<blockquote>
+<p>addSbtPlugin(&quot;com.typesafe.sbt&quot; % &quot;sbt-native-packager&quot; % &quot;x.y.z&quot;)</p>
 </blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>None</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<p>None</p>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>彩虹6号欢迎开黑~</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>None</p>
+<p>同时在build.sbt中追加：</p>
+<blockquote>
+<p>enablePlugins(JavaAppPackaging)<br>
+以及<br>
+enablePlugins(DockerPlugin)</p>
+</blockquote>
+<p>然后在项目文件下docker:publishLocal 就完成了</p>
+<h3 id="打包playframe可能遇到的问题">打包playframe可能遇到的问题</h3>
+<p>打包完成play项目的后，再启动镜像时可能会遇到如下问题</p>
+<p>1</p>
+<pre><code>    java.nio.file.AccessDeniedException: /opt/docker/RUNNING_PID
+            at sun.nio.fs.UnixException.translateToIOException(UnixException.java:84)
+            at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:102)
+            at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:107)
+            at sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:214)
+            at java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:434)
+            at java.nio.file.Files.newOutputStream(Files.java:216)
+            at play.core.server.ProdServerStart$.createPidFile(ProdServerStart.scala:136)
+            at play.core.server.ProdServerStart$.start(ProdServerStart.scala:43)
+            at play.core.server.ProdServerStart$.main(ProdServerStart.scala:25)
+            at play.core.server.ProdServerStart.main(ProdServerStart.scala)
+</code></pre>
+<p>解决方法：</p>
+<p>在build.sbt追加</p>
+<pre><code>javaOptions in Universal ++= Seq(
+  &quot;-Dpidfile.path=/dev/null&quot;
+)
+</code></pre>
+<p>在play项目的conf/ application.conf中追加</p>
+<p><code>play.server.pidfile.path=/dev/null</code></p>
+<p>2</p>
+<p><code>[error] p.a.l.c.CryptoConfigParser - The application secret has not been set, and we are in prod mode. Your application is not secure.</code></p>
+<p>解决方法</p>
+<p>在conf/application.conf中追加</p>
+<ul>
+<li>Play 2.5</li>
+</ul>
+<p><code>play.crypto.secret=&quot;changethissosomethingsecret&quot;</code></p>
+<ul>
+<li>Play 2.6+<br>
+<code>play.http.secret.key=&quot;changethissosomethingsecret&quot;</code></li>
+</ul>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://lushunn.github.io/post/yong-pytorch-bian-xie-word2vec">
+                  <h3 class="post-title">
+                    用PyTorch编写word2vec
+                  </h3>
+                </a>
+              </div>
             
 
             
