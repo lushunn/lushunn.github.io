@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1599746847868">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1603003437989">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -46,7 +46,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1599746847868" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1603003437989" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -221,18 +221,18 @@ a is<br>
 a king</p>
 </blockquote>
 <p>用图片展示更佳<br>
-<img src="https://lushunn.github.io/post-images/1586852413944.png" alt=""></p>
+<img src="https://lushunn.github.io/post-images/1586852413944.png" alt="" loading="lazy"></p>
 <h1 id="3定义目标函数">3.定义目标函数</h1>
 <p>对于 skip-gram来说，我们感兴趣的概率应该是已知中心词和参数下，上下文词的出现概率，对每一个词对，有<br>
-<img src="https://lushunn.github.io/post-images/1586852557983.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1586852557983.png" alt="" loading="lazy"><br>
 我们的模型，应该能使所有词对的以下概率出现最大化：<br>
-<img src="https://lushunn.github.io/post-images/1586852637182.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1586852637182.png" alt="" loading="lazy"><br>
 为了为方便求导，对目标函数log处理，并求目标函数最小化：<br>
-<img src="https://lushunn.github.io/post-images/1586852719522.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1586852719522.png" alt="" loading="lazy"><br>
 由于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo>(</mo><mi>a</mi><mo separator="true">⋅</mo><mi>b</mi><mo>)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>a</mi><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">log(a·b)=loga+logb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">b</span></span></span></span>,最后的损失函数为：<br>
-<img src="https://lushunn.github.io/post-images/1586852879223.png" alt=""></p>
+<img src="https://lushunn.github.io/post-images/1586852879223.png" alt="" loading="lazy"></p>
 <p>接下来只剩下定义概率P(context|center)，可以有<br>
-<img src="https://lushunn.github.io/post-images/1586852977281.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1586852977281.png" alt="" loading="lazy"><br>
 注意其形式类似于softmax函数。</p>
 <h1 id="4coding">4.coding</h1>
 <h2 id="input-layer">Input layer</h2>
@@ -294,10 +294,18 @@ for epo in range(num_epochs):
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://lushunn.github.io/tag/nULKByMio/" class="tag">
+                    deep learning
+                  </a>
+                
+              </div>
+            
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://lushunn.github.io/post/gong-si-nei-bu-ml-bi-sai-xiao-zong-jie">
+                <a href="https://lushunn.github.io/post/gong-si-nei-bu-ml-bi-sai-xiao-zong-jie/">
                   <h3 class="post-title">
                     公司内部ML比赛小总结
                   </h3>

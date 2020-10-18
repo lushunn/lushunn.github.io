@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>写Scala中会用到的一些tips | hi~</title>
+<title>如何在较旧的Spark生产环境中部署Prophet时序预测模型 | hi~</title>
 <meta name="description" content="凡有所相，皆为虚妄
 ">
 
@@ -118,60 +118,53 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">写Scala中会用到的一些tips</h2>
-            <div class="post-date">2020-03-09</div>
+            <h2 class="post-title">如何在较旧的Spark生产环境中部署Prophet时序预测模型</h2>
+            <div class="post-date">2020-10-18</div>
             
             <div class="post-content">
-              <p>记录工作中会常用到的一些实用例子</p>
-<ol>
-<li>尼基系数<br>
-科学计算方面scala包的丰富性还是略差于python，出于业务需要，需要编写一个计算基尼指数的函数，<br>
-<a href="https://www.cnblogs.com/OliverQin/p/8649605.html">here</a>  已经给出了计算方法和应用案例，根据计算过程稍加修改即可：</li>
-</ol>
-<pre><code class="language-scala"> def gini( nums :ArrayBuffer[Int]): Double={
-
- def scanLeft[a,b](xs:Iterable[a])(s:b)(f : (b,a) =&gt; b) =
-   xs.foldLeft(List(s))( (acc,x) =&gt; f(acc(0), x) :: acc).reverse //累加函数
- 
- val nums_1=nums.sorted
- val y_cumsum=scanLeft(nums_1)(0)(_+_)
- val y_sum=nums.sum
- val y_per_cumsum=y_cumsum.map(x=&gt;x.toDouble/y_sum)
- 
- val x = List.fill(nums.length)(1.0)
- val x_sum=x.sumstako
- val x_cumsum=scanLeft(x)(0.0)(_+_)
- val x_per_cumsum=x_cumsum.map(x=&gt;x/x_sum)
- val pairs = x_per_cumsum zip y_per_cumsum
- var B=0.0
- val l=pairs.length
- for (i &lt;- 1 until l) {
-   B+=(pairs(i)._2+pairs(i-1)._2)*(pairs(i)._1-pairs(i-1)._1)*0.5
- }
- val A = 0.5 - B
- A / (A + B)
-}
+              <p><a href="https://facebook.github.io/prophet/">Prophet</a>是微软开源的时序预测算法，自动化程度极高，支持R和Python接口，能自动考虑异常值、缺失值、突变点和节假日等影响因素。</p>
+<p>本场景是每天定时预测第二天各县市的iptv播放用户数，即每天对全国的省县市进行训练并预测出第二天288个5分钟对应的播放用户数，用以进行下一个环节的用户数实时突降预警。如果在客户端上单机上对一千多个县市直接套用for循环进行预测，耗时1h30min，如果实际部署将浪费了1h30min的时序特征，且挤占了很多的计算资源(如想利用python多线程加速的话)，因此在依托yarn集群的spark平台上融合prophet进行预测才是一个比较合理的方法，实测训练预测的流程运行耗时降至15分钟以内。</p>
+<p>首先遇到的问题是spark和python版本都太老旧，python版本为2.7，spark版本为2.2；第二是由于prophet模型依赖pandas库，大多数案例都是使用spark2.3.x结合pyspark的pandas udf(https://towardsdatascience.com/pyspark-forecasting-with-pandas-udf-and-fb-prophet-e9d70f86d802)，这样对grouped后的数据一一应用prophet时，能大大减少运行时间。但是笔者使用的大数据平台为多人公用，每分钟都运行着其他人的spark任务，为了业务的稳定不方便更换spark版本，因此只能舍弃pandas_udf的高性能。且好在spark支持提交虚拟环境的python zip包，才使得python3+prophet的虚拟环境可以在这么老旧的数据平台上发挥作用。</p>
+<h2 id="一python虚拟环境的打包">一.python虚拟环境的打包</h2>
+<p>推荐使用anaconda建立虚拟环境，并导出。<br>
+首先创建虚拟环境<br>
+<code>shell conda create -n ml_env python=3.6 （-n 指定给虚拟环境命名，python=3.6指定Python版本）</code></p>
+<p>然后在激活python环境的前提下，下载依赖包</p>
+<pre><code class="language-shell">source activate ml_env
+pip install pandas
+pip install fbprophet
 </code></pre>
-<ul>
-<li>刚开始使用scala，说实话自认写的挺烂，风格不够scala有优化空间，scanLeft我也是抄自<a href="https://stackoverflow.com/questions/3224935/in-scala-how-do-i-fold-a-list-and-return-the-intermediate-results">stackoverflow</a>,说实话没太看懂，希望之后会更进步。</li>
-</ul>
+<p>最后在anaconda安装目录的envs文件夹下进行打包</p>
+<pre><code class="language-shell">zip -r envs.zip ml_env
+</code></pre>
+<p>由于本案例pyspark使用的是yarn模式，因此需要上传到HDFS上</p>
+<pre><code class="language-shell"> hadoop fs  -put envs.zip =hdfs:///user/XXXX/spark/
+</code></pre>
+<h2 id="二-prophet运行代码开发">二、prophet运行代码开发</h2>
+<p><a href="https://github.com/lushunn/spark2.2_prophet">具体样例代码</a></p>
+<h2 id="三-提交py脚本">三、提交py脚本</h2>
+<p>#py_envs表示，这个文件被解压后指定的文件名称。(路径不一定和本样例一模一样)</p>
+<pre><code class="language-shell">spark-submit \
+--master yarn-cluster \
+--queue queue_iptvqoe  \
+--num-executors 10 \
+--driver-memory 4g \
+--executor-cores 6 \
+--executor-memory 9g \
+--conf spark.driver.port=50001 \
+--conf spark.yarn.dist.archives=hdfs:///user/iptvqoe/XXX/envs.zip#py_envs \
+--conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=py_envs/ml_env/py3.6/bin/python\
+ /slview/qoezy/lushun1/area_al/prophet_area.py
+</code></pre>
 
             </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://lushunn.github.io/tag/39Cxzq670/" class="tag">
-                    scala
-                  </a>
-                
-              </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://lushunn.github.io/post/lesslesstui-jian-xi-tong-shi-jian-greatergreater-du-shu-bi-ji-di-7-8-zhang-sa-hua-wan-jie/">
+                <a href="https://lushunn.github.io/post/kuai-su-jiang-scala-xiang-mu-da-bao-cheng-docker-jing-xiang/">
                   <h3 class="post-title">
-                    《推荐系统实践》 读书笔记 第7-8章（撒花完结）
+                    快速将scala项目打包成Docker镜像
                   </h3>
                 </a>
               </div>

@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1599746847868">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1603003437989">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -46,7 +46,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1599746847868" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1603003437989" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -158,20 +158,20 @@
 </p>
 <h1 id="推荐系统实例">推荐系统实例</h1>
 <h2 id="外围架构">外围架构</h2>
-<p><img src="https://lushunn.github.io/post-images/1575902726242.png" alt=""><br>
+<p><img src="https://lushunn.github.io/post-images/1575902726242.png" alt="" loading="lazy"><br>
 一般来说，需要实时存取的数据存储在数据库和缓存中，而大规模的非实时地存取数据存储在分布式<br>
 文件系统（如HDFS）中。数据能否实时存取在推荐系统中非常重要，因为推荐系统的实时性主要依赖于能否实时拿到用户的新行为。只有快速拿到大量用户的新行为，推荐系统才能够实时地适应用户当前的需求，<br>
 给用户进行实时推荐。</p>
 <h2 id="推荐系统架构">推荐系统架构</h2>
 <p>推荐系统需要由多个推荐引擎组成，每个推荐引擎负责一类特征和一种任务，而推荐系统的任务只是将推荐引擎的结果按照一定权重或者优先级合并、排序然后返回。<br>
-<img src="https://lushunn.github.io/post-images/1575902890988.png" alt=""><br>
+<img src="https://lushunn.github.io/post-images/1575902890988.png" alt="" loading="lazy"><br>
 好处：</p>
 <ul>
 <li>可以方便地增加/删除引擎，控制不同引擎对推荐结果的影响。</li>
 <li>可以实现推荐引擎级别的用户反馈。</li>
 </ul>
 <h2 id="推荐引擎的架构">推荐引擎的架构</h2>
-<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1575990317173.png" alt=""></figure>
+<figure data-type="image" tabindex="1"><img src="https://lushunn.github.io/post-images/1575990317173.png" alt="" loading="lazy"></figure>
 <ul>
 <li>A负责从数据库或者缓存中拿到用户行为数据，通过分析不同行为，生成当前用户的特征向量。不过如果是使用非行为特征，就不需要使用行为提取和分析模块了。该模块的输出是用户特征向量。</li>
 <li>B负责将用户的特征向量通过特征-物品相关矩阵转化为初始推荐物品列表。</li>
@@ -200,7 +200,7 @@
 <h3 id="排名模块">排名模块</h3>
 <ol>
 <li>新颖性排名<br>
-<img src="https://lushunn.github.io/post-images/1576068389198.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576068389198.png" alt="" loading="lazy"></li>
 <li>多样性<br>
 第一种提高多样性的方法是将推荐结果按照某种物品的内容属性分成几类，然后在每个类中<br>
 都选择该类中排名最高的物品组合成最终的推荐列表。第二种提高推荐结果多样性的方法是控制不同推荐结果的推荐理由出现的次数。</li>
@@ -234,10 +234,10 @@
 <h3 id="平均值">平均值</h3>
 <p>最简单的评分预测算法是利用平均值预测用户对物品的评分的。</p>
 <h4 id="用户分类对物品分类的平均值">用户分类对物品分类的平均值</h4>
-<figure data-type="image" tabindex="2"><img src="https://lushunn.github.io/post-images/1576069195460.png" alt=""></figure>
+<figure data-type="image" tabindex="2"><img src="https://lushunn.github.io/post-images/1576069195460.png" alt="" loading="lazy"></figure>
 <h4 id="基于邻域的方法">基于邻域的方法</h4>
-<p><img src="https://lushunn.github.io/post-images/1576069380433.png" alt=""><br>
-<img src="https://lushunn.github.io/post-images/1576069415145.png" alt=""></p>
+<p><img src="https://lushunn.github.io/post-images/1576069380433.png" alt="" loading="lazy"><br>
+<img src="https://lushunn.github.io/post-images/1576069415145.png" alt="" loading="lazy"></p>
 <h4 id="隐语义模型与矩阵分解模型">隐语义模型与矩阵分解模型</h4>
 <p>用户的评分行为可以表示成一个评分矩阵R，其中R[u][i]就是用户u对物品i的评分。但是，用户不会对所有的物品评分，所以这个矩阵里有很多元素都是空的，评分预测从某种意义上说就是填空。<br>
 1.传统的SVD分解<br>
@@ -255,21 +255,21 @@
 </ul>
 <ol start="2">
 <li>Simon Funk的SVD分解<br>
-<img src="https://lushunn.github.io/post-images/1576072524954.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576072524954.png" alt="" loading="lazy"></li>
 <li>加入偏置项后的LFM<br>
-<img src="https://lushunn.github.io/post-images/1576072609974.png" alt=""><br>
-<img src="https://lushunn.github.io/post-images/1576072614699.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576072609974.png" alt="" loading="lazy"><br>
+<img src="https://lushunn.github.io/post-images/1576072614699.png" alt="" loading="lazy"></li>
 <li>考虑邻域影响的LFM<br>
 前面的LFM模型中并没有显式地考虑用户的历史行为对用户评分预测的影响，提出SVD++。<br>
-<img src="https://lushunn.github.io/post-images/1576072706266.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576072706266.png" alt="" loading="lazy"></li>
 </ol>
 <h4 id="加入时间信息">加入时间信息</h4>
 <ol>
 <li>基于邻域的模型融合时间信息<br>
-<img src="https://lushunn.github.io/post-images/1576072781297.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576072781297.png" alt="" loading="lazy"></li>
 <li>基于矩阵分解的模型融合时间信息<br>
 在引入时间信息后，用户评分矩阵不再是一个二维矩阵，而是变成了一个三维矩阵。我们可以仿照分解二维矩阵的方式对三维矩阵进行分解。<br>
-<img src="https://lushunn.github.io/post-images/1576072903806.png" alt=""></li>
+<img src="https://lushunn.github.io/post-images/1576072903806.png" alt="" loading="lazy"></li>
 </ol>
 <h4 id="模型融合">模型融合</h4>
 <ol>
@@ -282,7 +282,7 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://lushunn.github.io/post/lesslesstui-jian-xi-tong-shi-jian-greatergreater-du-shu-bi-ji-di-5-6-zhang">
+                <a href="https://lushunn.github.io/post/lesslesstui-jian-xi-tong-shi-jian-greatergreater-du-shu-bi-ji-di-5-6-zhang/">
                   <h3 class="post-title">
                     《推荐系统实践》 读书笔记 第5-6章
                   </h3>

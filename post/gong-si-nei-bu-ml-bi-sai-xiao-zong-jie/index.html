@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1599746847868">
+<link rel="shortcut icon" href="https://lushunn.github.io/favicon.ico?v=1603003437989">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://lushunn.github.io/styles/main.css">
 
@@ -46,7 +46,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://lushunn.github.io">
-        <img src="https://lushunn.github.io/images/avatar.png?v=1599746847868" class="site-logo">
+        <img src="https://lushunn.github.io/images/avatar.png?v=1603003437989" class="site-logo">
         <h1 class="site-title">hi~</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -213,8 +213,8 @@ def distPlot(data,feature, save=False, filename=None):
     plt.show()
 </code></pre>
 <p>可视化效果如下<br>
-<img src="https://lushunn.github.io/post-images/1583769731867.png" alt=""><br>
-<img src="https://lushunn.github.io/post-images/1583769758058.png" alt=""></p>
+<img src="https://lushunn.github.io/post-images/1583769731867.png" alt="" loading="lazy"><br>
+<img src="https://lushunn.github.io/post-images/1583769758058.png" alt="" loading="lazy"></p>
 <h2 id="3-建模思路">3. 建模思路</h2>
 <p>经过和同事讨论和排名靠全的同事分享，提高得分的诀窍在于train数据和test数据存在分布差别过大，以及数据不均衡的现象。总结来说tricks有三点，stacking增强模型泛化能力，重采样以及调整损失函数。很遗憾其实我只做到了第二点，简单的将label分布最少的样本翻了一倍；模型集成方面用的相较于stacking更简单的10fold交叉验证，每9折数据建立模型预测pred_prob取平均。</p>
 <p>1）特征工程</p>
@@ -229,10 +229,18 @@ def distPlot(data,feature, save=False, filename=None):
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://lushunn.github.io/tag/1dwTW_nx8/" class="tag">
+                    机器学习
+                  </a>
+                
+              </div>
+            
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://lushunn.github.io/post/xie-scala-zhong-hui-yong-dao-de-yi-xie-tips">
+                <a href="https://lushunn.github.io/post/xie-scala-zhong-hui-yong-dao-de-yi-xie-tips/">
                   <h3 class="post-title">
                     写Scala中会用到的一些tips
                   </h3>
